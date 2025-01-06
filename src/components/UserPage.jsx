@@ -9,19 +9,18 @@ const UserPage = () => {
 	const navigate = useNavigate()
 	const [error, setError] = useState(null)
 
-	const handleDelete = async e => {
+	const handleDelete = e => {
 		e.preventDefault()
-		try {
-			await deleteUser({ id: id, token: token })
-			navigate('/login')
-		} catch (err) {
-			console.error('Ошибка удаления:', err)
-			setError(
-				err.response
-					? err.response.data.message
-					: 'Ошибка изменения данных пользователя'
-			)
-		}
+		deleteUser({ id: id, token: token })
+			.then(() => navigate('/login'))
+			.catch(err => {
+				console.error('Ошибка удаления:', err)
+				setError(
+					err.response
+						? err.response.data.message
+						: 'Ошибка изменения данных пользователя'
+				)
+			})
 	}
 	const combinedError = userError || error
 	if (loading) return <div>Загрузка...</div>

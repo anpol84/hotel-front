@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { editUser } from '../api'
@@ -18,18 +19,28 @@ const EditUser = () => {
 		setUserData({ ...userData, [e.target.name]: e.target.value })
 	}
 
-	const handleSubmit = async e => {
+	const handleSubmit = e => {
 		e.preventDefault()
-		try {
-			await editUser(userData, id, token)
-			navigate('/login')
-		} catch (err) {
-			setError(
-				err.response
-					? err.response.data.message
-					: 'Ошибка изменения данных пользователя'
-			)
-		}
+		editUser(userData, id, token)
+			.then(() => {
+				const token = document.cookie
+					.split('; ')
+					.find(row => row.startsWith('token='))
+					.split('=')[1]
+				const decodedToken = jwtDecode(token)
+				if (decodedToken.user_id != id) {
+					navigate('/users')
+				} else {
+					navigate('/login')
+				}
+			})
+			.catch(err => {
+				setError(
+					err.response
+						? err.response.data.message
+						: 'Ошибка изменения данных пользователя'
+				)
+			})
 	}
 
 	useEffect(() => {
@@ -65,7 +76,7 @@ const EditUser = () => {
 				<button type='submit'>Изменить профиль</button>
 			</form>
 			<p>
-				<Link to={`/users/${id}`}>Назад</Link>
+				<Link to={`/users/${id}`}>К профилю</Link>
 			</p>
 		</div>
 	)

@@ -11,16 +11,17 @@ const Login = () => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value })
 	}
 
-	const handleSubmit = async e => {
+	const handleSubmit = e => {
 		e.preventDefault()
-		try {
-			const response = await login(credentials)
-			document.cookie = `token=${response.data.token}; path=/`
-			navigate('/')
-		} catch (error) {
-			console.error('Ошибка входа:', error)
-			setError(error)
-		}
+		login(credentials)
+			.then(response => {
+				document.cookie = `token=${response.data.token}; path=/`
+				navigate('/')
+			})
+			.catch(error => {
+				console.error('Ошибка входа:', error)
+				setError(error)
+			})
 	}
 
 	return (

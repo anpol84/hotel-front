@@ -21,9 +21,6 @@ const Navbar = ({ userRole, id }) => {
 				{userRole.indexOf('ROLE_ADMIN') !== -1 && (
 					<div>
 						<li>
-							<Link to='/admin'>Админка</Link>
-						</li>
-						<li>
 							<Link to='/users'>Все пользователи</Link>
 						</li>
 					</div>

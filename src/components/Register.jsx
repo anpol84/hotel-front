@@ -15,17 +15,18 @@ const Register = () => {
 		setUserData({ ...userData, [e.target.name]: e.target.value })
 	}
 
-	const handleSubmit = async e => {
+	const handleSubmit = e => {
 		e.preventDefault()
-		try {
-			const response = await register(userData)
-			document.cookie = `token=${response.data.token}; path=/`
-			navigate('/')
-		} catch (error) {
-			console.log(error)
-			console.error('Ошибка регистрации:', error)
-			setError(error)
-		}
+		register(userData)
+			.then(response => {
+				document.cookie = `token=${response.data.token}; path=/`
+				navigate('/')
+			})
+			.catch(error => {
+				console.log(error)
+				console.error('Ошибка регистрации:', error)
+				setError(error)
+			})
 	}
 
 	return (
