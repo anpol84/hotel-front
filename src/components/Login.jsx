@@ -1,56 +1,91 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login } from '../api'
+import { login as doLogin } from '../api'
 
 const Login = () => {
-	const [credentials, setCredentials] = useState({ login: '', password: '' })
-	const navigate = useNavigate()
-	const [error, setError] = useState(null)
+	const [error, setError] = useState('')
+	const [login, setLogin] = useState({
+		login: '',
+		password: '',
+	})
 
-	const handleChange = e => {
-		setCredentials({ ...credentials, [e.target.name]: e.target.value })
+	const navigate = useNavigate()
+
+	const handleInputChange = e => {
+		setLogin({ ...login, [e.target.name]: e.target.value })
 	}
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		login(credentials)
+		doLogin(login)
 			.then(response => {
 				document.cookie = `token=${response.data.token}; path=/`
 				navigate('/')
 			})
 			.catch(error => {
 				console.error('Ошибка входа:', error)
-				setError(error)
+				setError(error.response.data.message)
+				setTimeout(() => {
+					setError('')
+				}, 4000)
 			})
 	}
 
 	return (
-		<div>
-			{error != null && error.response.data.message}
+		<section className='container col-6 mt-5 mb-5'>
+			{error && <p className='alert alert-danger'>{error}</p>}
+			<h2>Login</h2>
 			<form onSubmit={handleSubmit}>
-				<input
-					type='text'
-					name='login'
-					placeholder='Логин'
-					onChange={handleChange}
-					required
-				/>
-				<input
-					type='password'
-					name='password'
-					placeholder='Пароль'
-					onChange={handleChange}
-					required
-				/>
-				<button type='submit'>Войти</button>
+				<div className='row mb-3'>
+					<label htmlFor='login' className='col-sm-2 col-form-label'>
+						Email
+					</label>
+					<div>
+						<input
+							id='login'
+							name='login'
+							type='text'
+							className='form-control'
+							value={login.login}
+							onChange={handleInputChange}
+						/>
+					</div>
+				</div>
+
+				<div className='row mb-3'>
+					<label
+						htmlFor='password'
+						className='col-sm-2 col-form-label'
+					>
+						Password
+					</label>
+					<div>
+						<input
+							id='password'
+							name='password'
+							type='password'
+							className='form-control'
+							value={login.password}
+							onChange={handleInputChange}
+						/>
+					</div>
+				</div>
+
+				<div className='mb-3'>
+					<button
+						type='submit'
+						className='btn btn-hotel'
+						style={{ marginRight: '10px' }}
+					>
+						Login
+					</button>
+					<span style={{ marginLeft: '10px' }}>
+						Don't' have an account yet?
+						<Link to={'/register'}>Register</Link>
+					</span>
+				</div>
 			</form>
-			<p>
-				Нет аккаунта? <Link to='/register'>Создайте!</Link>
-			</p>
-			<p>
-				<Link to='/'>На главную</Link>
-			</p>
-		</div>
+		</section>
 	)
 }
 

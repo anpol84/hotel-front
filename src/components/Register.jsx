@@ -3,66 +3,104 @@ import { Link, useNavigate } from 'react-router-dom'
 import { register } from '../api'
 
 const Register = () => {
-	const [userData, setUserData] = useState({
+	const [registration, setRegistration] = useState({
 		login: '',
 		password: '',
-		city: '',
 	})
-	const [error, setError] = useState(null)
 	const navigate = useNavigate()
 
-	const handleChange = e => {
-		setUserData({ ...userData, [e.target.name]: e.target.value })
+	const [errorMessage, setErrorMessage] = useState('')
+	const [successMessage, setSuccessMessage] = useState('')
+
+	const handleInputChange = e => {
+		setRegistration({ ...registration, [e.target.name]: e.target.value })
 	}
 
-	const handleSubmit = e => {
+	const handleRegistration = e => {
 		e.preventDefault()
-		register(userData)
+		register(registration)
 			.then(response => {
+				console.log('good')
 				document.cookie = `token=${response.data.token}; path=/`
-				navigate('/')
+				setSuccessMessage('Registration success!')
+				setErrorMessage('')
+				setRegistration({
+					login: '',
+					password: '',
+				})
+				setTimeout(() => {
+					setSuccessMessage('')
+					navigate('/')
+				}, 3000)
 			})
 			.catch(error => {
-				console.log(error)
-				console.error('Ошибка регистрации:', error)
-				setError(error)
+				setErrorMessage(error.response.data.message)
 			})
+		setTimeout(() => {
+			setErrorMessage('')
+			setSuccessMessage('')
+		}, 5000)
 	}
 
 	return (
-		<div>
-			{error != null && error.response.data.message}
-			<form onSubmit={handleSubmit}>
-				<input
-					type='text'
-					name='login'
-					placeholder='Логин'
-					onChange={handleChange}
-					required
-				/>
-				<input
-					type='password'
-					name='password'
-					placeholder='Пароль'
-					onChange={handleChange}
-					required
-				/>
-				<input
-					type='text'
-					name='city'
-					placeholder='Город'
-					onChange={handleChange}
-					required
-				/>
-				<button type='submit'>Зарегистрироваться</button>
+		<section className='container col-6 mt-5 mb-5'>
+			{errorMessage && (
+				<p className='alert alert-danger'>{errorMessage}</p>
+			)}
+			{successMessage && (
+				<p className='alert alert-success'>{successMessage}</p>
+			)}
+			<h2>Register</h2>
+			<form onSubmit={handleRegistration}>
+				<div className='mb-3 row'>
+					<label htmlFor='login' className='col-sm-2 col-form-label'>
+						Login
+					</label>
+					<div className='col-sm-10'>
+						<input
+							id='login'
+							name='login'
+							type='text'
+							className='form-control'
+							value={registration.login}
+							onChange={handleInputChange}
+						/>
+					</div>
+				</div>
+
+				<div className='mb-3 row'>
+					<label
+						htmlFor='password'
+						className='col-sm-2 col-form-label'
+					>
+						Password
+					</label>
+					<div className='col-sm-10'>
+						<input
+							type='password'
+							className='form-control'
+							id='password'
+							name='password'
+							value={registration.password}
+							onChange={handleInputChange}
+						/>
+					</div>
+				</div>
+				<div className='mb-3'>
+					<button
+						type='submit'
+						className='btn btn-hotel'
+						style={{ marginRight: '10px' }}
+					>
+						Register
+					</button>
+					<span style={{ marginLeft: '10px' }}>
+						Already have an account?{' '}
+						<Link to={'/login'}>Login</Link>
+					</span>
+				</div>
 			</form>
-			<p>
-				Уже есть аккаунт? <Link to='/login'>Войдите!</Link>
-			</p>
-			<p>
-				<Link to='/'>На главную</Link>
-			</p>
-		</div>
+		</section>
 	)
 }
 

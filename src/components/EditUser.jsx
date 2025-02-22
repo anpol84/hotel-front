@@ -6,12 +6,12 @@ import useUser from '../hooks/useUser'
 
 const EditUser = () => {
 	const { id } = useParams()
-	const { user, loading, error: userError, token } = useUser(id)
+	const { user, error: userError, token } = useUser(id)
+	const [successMessage, setSuccessMessage] = useState('')
 	const [userData, setUserData] = useState({
 		login: '',
-		city: '',
 	})
-	const [error, setError] = useState(null)
+	const [errorMessage, setErrorMessage] = useState('')
 
 	const navigate = useNavigate()
 
@@ -28,18 +28,24 @@ const EditUser = () => {
 					.find(row => row.startsWith('token='))
 					.split('=')[1]
 				const decodedToken = jwtDecode(token)
-				if (decodedToken.user_id != id) {
-					navigate('/users')
-				} else {
-					navigate('/login')
-				}
+				setSuccessMessage('User updated successfully')
+				setTimeout(() => {
+					if (decodedToken.user_id != id) {
+						navigate('/users')
+					} else {
+						navigate('/login')
+					}
+				}, 2000)
 			})
 			.catch(err => {
-				setError(
+				setErrorMessage(
 					err.response
 						? err.response.data.message
 						: 'Ошибка изменения данных пользователя'
 				)
+				setTimeout(() => {
+					setErrorMessage('')
+				}, 5000)
 			})
 	}
 
@@ -49,35 +55,57 @@ const EditUser = () => {
 		}
 	}, [user])
 
-	const combinedError = userError || error
-
-	if (loading) return <div>Загрузка...</div>
+	const combinedError = userError || errorMessage
 
 	return (
-		<div>
-			{combinedError && <div>Ошибка: {combinedError}</div>}
-			<form onSubmit={handleSubmit}>
-				<input
-					type='text'
-					name='login'
-					placeholder='Логин'
-					onChange={handleChange}
-					value={userData.login}
-					required
-				/>
-				<input
-					type='text'
-					name='city'
-					placeholder='Город'
-					onChange={handleChange}
-					value={userData.city}
-					required
-				/>
-				<button type='submit'>Изменить профиль</button>
-			</form>
-			<p>
-				<Link to={`/users/${id}`}>К профилю</Link>
-			</p>
+		<div className='container mt-5 mb-5'>
+			<h3 className='text-center mb-5 mt-5'>Edit User</h3>
+			<div className='row justify-content-center'>
+				<div className='col-md-8 col-lg-6'>
+					{successMessage && (
+						<div className='alert alert-success' role='alert'>
+							{successMessage}
+						</div>
+					)}
+					{combinedError && (
+						<div className='alert alert-danger' role='alert'>
+							{combinedError}
+						</div>
+					)}
+					<form onSubmit={handleSubmit}>
+						<div className='mb-3'>
+							<label
+								htmlFor='login'
+								className='form-label hotel-color'
+							>
+								Login
+							</label>
+							<input
+								type='text'
+								className='form-control'
+								id='login'
+								name='login'
+								value={userData.login}
+								onChange={handleChange}
+							/>
+						</div>
+						<div className='d-grid gap-2 d-md-flex mt-2'>
+							<Link
+								to={`/users/${id}`}
+								className='btn btn-outline-info ml-5'
+							>
+								К профилю
+							</Link>
+							<button
+								type='submit'
+								className='btn btn-outline-warning'
+							>
+								Edit User
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	)
 }

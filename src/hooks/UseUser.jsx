@@ -4,8 +4,7 @@ import { getUser } from '../api'
 
 const useUser = id => {
 	const [user, setUser] = useState(null)
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState(null)
+	const [errorMessage, setErrorMessage] = useState('')
 	const [token, setToken] = useState('')
 	const navigate = useNavigate()
 
@@ -22,19 +21,15 @@ const useUser = id => {
 					setUser(response.data)
 				})
 				.catch(err => {
-					setError(err.message)
+					setErrorMessage(err.response.data.message)
 					navigate('/login')
 				})
-				.finally(() => {
-					setLoading(false)
-				})
 		} else {
-			setLoading(false)
 			navigate('/login')
 		}
 	}, [id, navigate])
 
-	return { user, loading, error, token }
+	return { user, errorMessage, token }
 }
 
 export default useUser
