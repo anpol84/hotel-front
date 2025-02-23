@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
 const Logout = ({ id }) => {
 	const navigate = useNavigate()
 
@@ -16,6 +15,9 @@ const Logout = ({ id }) => {
 			<li>
 				<Link className='dropdown-item' to={`/users/${id}`}>
 					Profile
+				</Link>
+				<Link className='dropdown-item' to={`/users/${id}/favourite`}>
+					Favourite hotels
 				</Link>
 			</li>
 			<li>

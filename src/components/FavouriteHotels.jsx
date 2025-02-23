@@ -1,30 +1,35 @@
-import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { getHotels, validateAdmin } from '../api'
+import { useParams } from 'react-router-dom'
+import {
+	addFavouriteHotel,
+	deleteFavouriteHotel,
+	getFavouriteHotels,
+} from '../api'
+import useUser from '../hooks/useUser'
 import HotelCard from './HotelCard'
-import Navbar from './Navbar'
 import Paginator from './Paginator'
 
-const Hotels = () => {
+const FavouriteHotels = () => {
+	const { id } = useParams()
+	const { user, error: userError, token } = useUser(id)
 	const [data, setData] = useState([])
 	const [error, setError] = useState(null)
 	const [isLoading, setIsLoading] = useState(false)
 	const [currentPage, setCurrentPage] = useState(1)
 	const [hotelsPerPage] = useState(20)
-	const [token, setToken] = useState('')
 	const [searchQuery, setSearchQuery] = useState('')
-	const [isAdmin, setIsAdmin] = useState(false)
-	const [user, setUser] = useState({ role: [], id: null, login: 'Гость' })
 
 	useEffect(() => {
 		setIsLoading(true)
 		const tokenCookie = document.cookie
 			.split('; ')
 			.find(row => row.startsWith('token='))
-		const tokenValue = tokenCookie ? tokenCookie.split('=')[1] : null
-		getHotels(tokenValue)
+		let tokenValue
+		if (tokenCookie) {
+			tokenValue = tokenCookie.split('=')[1]
+		}
+		getFavouriteHotels(id, tokenValue)
 			.then(data => {
 				setData(data.data.hotels)
 				setIsLoading(false)
@@ -33,46 +38,38 @@ const Hotels = () => {
 				setError(error.response.data.message)
 				setIsLoading(false)
 			})
-
-		if (tokenCookie) {
-			const tokenValue = tokenCookie.split('=')[1]
-
-			validateAdmin({ token: tokenValue })
-				.then(response => {
-					setIsAdmin(response.data.isValid)
-					setToken(tokenValue)
-					const decodedToken = jwtDecode(tokenValue)
-					setUser({
-						login: decodedToken.username,
-						role: decodedToken.role,
-						id: decodedToken.user_id,
-					})
-				})
-				.catch(err => {
-					setIsAdmin(false)
-				})
-		}
 	}, [])
-
-	const handleDeleteHotel = hotelId => {
-		setData(prevData => prevData.filter(hotel => hotel.id !== hotelId))
-	}
-
-	const handleChangeFavourite = hotelId => {
-		setData(prevData =>
-			prevData.map(hotel =>
-				hotel.id === hotelId
-					? { ...hotel, isFavourite: !hotel.isFavourite }
-					: hotel
-			)
-		)
-	}
-
+	const combinedError = userError || error
 	if (isLoading) {
 		return <div>Loading rooms........</div>
 	}
-	if (error) {
+	if (combinedError) {
 		return <div className='text-danger'>Error : {error}</div>
+	}
+
+	const handleChangeFavourite = hotelId => {
+		setData(prevData => prevData.filter(prevData => prevData.id != hotelId))
+	}
+
+	const handleFavourite = hotel => {
+		if (!token) {
+			navigate('/login')
+		}
+		const decodedToken = jwtDecode(token)
+		const user = {
+			login: decodedToken.username,
+			role: decodedToken.role,
+			id: decodedToken.user_id,
+		}
+		if (hotel.isFavourite) {
+			deleteFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(
+				() => handleChangeFavourite(hotel.id)
+			)
+		} else {
+			addFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(() =>
+				handleChangeFavourite(hotel.id)
+			)
+		}
 	}
 
 	const handlePageNumber = pageNumber => {
@@ -98,9 +95,7 @@ const Hotels = () => {
 				<HotelCard
 					key={hotel.id}
 					hotel={hotel}
-					isAdmin={isAdmin}
 					token={token}
-					onDelete={handleDeleteHotel}
 					onChangeFavourite={handleChangeFavourite}
 				/>
 			))
@@ -108,8 +103,6 @@ const Hotels = () => {
 
 	return (
 		<section className='container'>
-			<Navbar userRole={user.role} id={user.id} />
-			<br />
 			<Container>
 				<Row>
 					<Col md={6} className='mb-3 mb-md-0'>
@@ -123,16 +116,6 @@ const Hotels = () => {
 				</Row>
 
 				<Row>
-					{isAdmin && (
-						<div style={{ marginTop: '10px' }}>
-							<Link
-								to={`/hotels/create`}
-								className='btn btn-hotel btn'
-							>
-								Добавить отель
-							</Link>
-						</div>
-					)}
 					<Col
 						md={6}
 						className='d-flex align-items-center justify-content-end'
@@ -162,4 +145,4 @@ const Hotels = () => {
 	)
 }
 
-export default Hotels
+export default FavouriteHotels

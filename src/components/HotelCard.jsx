@@ -1,11 +1,13 @@
+import { jwtDecode } from 'jwt-decode'
 import { React, useState } from 'react'
 import { Card, Col } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import { deleteHotel } from '../api'
+import { addFavouriteHotel, deleteFavouriteHotel, deleteHotel } from '../api'
 
-const HotelCard = ({ hotel, isAdmin, token, onDelete }) => {
+const HotelCard = ({ hotel, isAdmin, token, onDelete, onChangeFavourite }) => {
 	const navigate = useNavigate()
 	const [errorMessage, setErrorMessage] = useState('')
+
 	const handleDelete = e => {
 		e.preventDefault()
 		deleteHotel(hotel.id, token)
@@ -23,40 +25,81 @@ const HotelCard = ({ hotel, isAdmin, token, onDelete }) => {
 		e.preventDefault()
 		navigate(`/hotels/${hotel.id}/edit`)
 	}
+	const handleFavourite = () => {
+		if (!token) {
+			navigate('/login')
+		}
+		const decodedToken = jwtDecode(token)
+		const user = {
+			login: decodedToken.username,
+			role: decodedToken.role,
+			id: decodedToken.user_id,
+		}
+		if (hotel.isFavourite) {
+			deleteFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(
+				() => onChangeFavourite(hotel.id)
+			)
+		} else {
+			addFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(() =>
+				onChangeFavourite(hotel.id)
+			)
+		}
+	}
 	return (
-		<Col key={hotel.id} className='mb-4' xs={12}>
+		<Col key={hotel.id} className='mb-4' xs={12} md={6} lg={3}>
 			<Card>
-				<Card.Body className='d-flex flex-wrap align-items-center'>
-					<div className='flex-shrink-0 mr-3 mb-3 mb-md-0'>
-						<Link to={`/book-room/${hotel.id}`}>
-							<Card.Img
-								variant='top'
-								src={`${hotel.imageUrl}`}
-								alt='Hotel Photo'
-								style={{
-									width: '100%',
-									maxWidth: '200px',
-									height: 'auto',
-								}}
-							></Card.Img>
-						</Link>
+				<div style={{ position: 'relative' }}>
+					<Card.Img
+						variant='top'
+						src={hotel.imageUrl}
+						alt='Hotel Photo'
+						className='w-100'
+						style={{
+							height: '200px',
+						}}
+					/>
+					<div
+						style={{
+							position: 'absolute',
+							top: '10px',
+							right: '10px',
+							cursor: 'pointer',
+						}}
+					>
+						<img
+							src={
+								hotel.isFavourite
+									? '/img/heart-liked.svg'
+									: '/img/heart-unliked.svg'
+							}
+							onClick={handleFavourite}
+							alt='Unliked'
+						/>
 					</div>
-					<div className='flex-grow-1 ml-3 px-5'>
-						<Card.Title className='hotel-color'>
-							{hotel.name}
-						</Card.Title>
-						<Card.Title className='room-price'>
-							{hotel.city}
-						</Card.Title>
-						<Card.Title className='room-price'>
-							Средний рейтинг: {hotel.avgRate}
-						</Card.Title>
-					</div>
+				</div>
+				<Card.Body>
+					<Card.Title className='hotel-color'>
+						{hotel.name}
+					</Card.Title>
+					<Card.Title className='room-price'>{hotel.city}</Card.Title>
+					<Card.Title className='room-price'>
+						Средний рейтинг: {hotel.avgRate}
+					</Card.Title>
 					<>
+						<div className='flex-shrink-0 m-1'>
+							<Link
+								to={`/hotels/${hotel.id}`}
+								className='btn btn-hotel btn-sm'
+								style={{ width: '95px' }}
+							>
+								Подробнее
+							</Link>
+						</div>
 						{isAdmin && (
-							<div className='mx-2'>
+							<div className='flex-shrink-0 m-1'>
 								<button
-									className='btn btn-danger btn'
+									className='btn btn-danger btn-sm'
+									style={{ width: '95px' }}
 									onClick={handleDelete}
 								>
 									Close hotel
@@ -64,23 +107,16 @@ const HotelCard = ({ hotel, isAdmin, token, onDelete }) => {
 							</div>
 						)}
 						{isAdmin && (
-							<div className='mx-2'>
+							<div className='flex-shrink-0 m-1'>
 								<button
-									className='btn btn-warning btn'
+									className='btn btn-warning btn-sm'
 									onClick={handleEdit}
+									style={{ width: '95px' }}
 								>
 									Edit hotel
 								</button>
 							</div>
 						)}
-						<div className='mx-2'>
-							<Link
-								to={`/hotels/${hotel.id}`}
-								className='btn btn-hotel btn'
-							>
-								Подробнее
-							</Link>
-						</div>
 					</>
 				</Card.Body>
 			</Card>

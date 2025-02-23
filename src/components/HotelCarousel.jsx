@@ -1,7 +1,8 @@
+import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
 import { Card, Carousel, Col, Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { getHotels } from '../api'
+import { Link, useNavigate } from 'react-router-dom'
+import { addFavouriteHotel, deleteFavouriteHotel, getHotels } from '../api'
 
 const HotelCarousel = () => {
 	const [hotels, setHotels] = useState([
@@ -9,9 +10,16 @@ const HotelCarousel = () => {
 	])
 	const [errorMessage, setErrorMessage] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
+	const [token, setToken] = useState('')
+	const navigate = useNavigate()
 	useEffect(() => {
 		setIsLoading(true)
-		getHotels()
+		const tokenCookie = document.cookie
+			.split('; ')
+			.find(row => row.startsWith('token='))
+		const tokenValue = tokenCookie ? tokenCookie.split('=')[1] : null
+		setToken(tokenValue)
+		getHotels(tokenValue)
 			.then(data => {
 				setHotels(data.data.hotels)
 				setIsLoading(false)
@@ -21,6 +29,37 @@ const HotelCarousel = () => {
 				setIsLoading(false)
 			})
 	}, [])
+
+	const handleChangeFavourite = hotelId => {
+		setHotels(prevData =>
+			prevData.map(hotel =>
+				hotel.id === hotelId
+					? { ...hotel, isFavourite: !hotel.isFavourite }
+					: hotel
+			)
+		)
+	}
+
+	const handleFavourite = hotel => {
+		if (!token) {
+			navigate('/login')
+		}
+		const decodedToken = jwtDecode(token)
+		const user = {
+			login: decodedToken.username,
+			role: decodedToken.role,
+			id: decodedToken.user_id,
+		}
+		if (hotel.isFavourite) {
+			deleteFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(
+				() => handleChangeFavourite(hotel.id)
+			)
+		} else {
+			addFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(() =>
+				handleChangeFavourite(hotel.id)
+			)
+		}
+	}
 
 	if (isLoading) {
 		return <div className='mt-5'>Loading hotels....</div>
@@ -54,19 +93,45 @@ const HotelCarousel = () => {
 												lg={3}
 											>
 												<Card>
-													<Link
-														to={`/hotels/${hotel.id}`}
+													<div
+														style={{
+															position:
+																'relative',
+														}}
 													>
 														<Card.Img
 															variant='top'
-															src={`${hotel.imageUrl}`}
+															src={hotel.imageUrl}
 															alt='Hotel Photo'
 															className='w-100'
 															style={{
 																height: '200px',
 															}}
 														/>
-													</Link>
+														<div
+															style={{
+																position:
+																	'absolute',
+																top: '10px',
+																right: '10px',
+																cursor: 'pointer',
+															}}
+														>
+															<img
+																src={
+																	hotel.isFavourite
+																		? '/img/heart-liked.svg'
+																		: '/img/heart-unliked.svg'
+																}
+																onClick={() =>
+																	handleFavourite(
+																		hotel
+																	)
+																}
+																alt='Unliked'
+															/>
+														</div>
+													</div>
 													<Card.Body>
 														<Card.Title className='hotel-color'>
 															{hotel.name}

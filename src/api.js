@@ -24,8 +24,11 @@ export const getUser = userData => {
 	})
 }
 
-export const getHotel = id => {
-	return axios.get(`${API_URL}/hotels/${id.id}`)
+export const getHotel = (id, token) => {
+	console.log(token)
+	return axios.get(`${API_URL}/hotels/${id.id}`, {
+		headers: { token: token },
+	})
 }
 
 export const deleteUser = userData => {
@@ -52,8 +55,10 @@ export const getUsers = token => {
 	})
 }
 
-export const getHotels = () => {
-	return axios.get(`${API_URL}/hotels`)
+export const getHotels = token => {
+	return axios.get(`${API_URL}/hotels`, {
+		headers: { token: token },
+	})
 }
 
 export const createHotel = (hotel, token) => {
@@ -64,6 +69,25 @@ export const createHotel = (hotel, token) => {
 
 export const deleteHotel = (id, token) => {
 	return axios.delete(`${API_URL}/hotels/${id}`, {
+		headers: { token: token },
+	})
+}
+
+export const addFavouriteHotel = (hotelId, userId, token) => {
+	return axios.post(`${API_URL}/hotels/favourite/${userId}`, hotelId, {
+		headers: { token: token },
+	})
+}
+
+export const deleteFavouriteHotel = (hotelId, userId, token) => {
+	return axios.delete(`${API_URL}/hotels/favourite/${userId}`, {
+		headers: { token: token },
+		data: hotelId,
+	})
+}
+
+export const getFavouriteHotels = (userId, token) => {
+	return axios.get(`${API_URL}/hotels/favourite/${userId}`, {
 		headers: { token: token },
 	})
 }

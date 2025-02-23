@@ -20,7 +20,6 @@ const Register = () => {
 		e.preventDefault()
 		register(registration)
 			.then(response => {
-				console.log('good')
 				document.cookie = `token=${response.data.token}; path=/`
 				setSuccessMessage('Registration success!')
 				setErrorMessage('')

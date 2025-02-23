@@ -23,7 +23,6 @@ const Login = () => {
 				navigate('/')
 			})
 			.catch(error => {
-				console.error('Ошибка входа:', error)
 				setError(error.response.data.message)
 				setTimeout(() => {
 					setError('')

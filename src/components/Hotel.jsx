@@ -1,6 +1,13 @@
+import { jwtDecode } from 'jwt-decode'
 import { React, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { deleteHotel, getHotel, validateAdmin } from '../api.js'
+import {
+	addFavouriteHotel,
+	deleteFavouriteHotel,
+	deleteHotel,
+	getHotel,
+	validateAdmin,
+} from '../api.js'
 
 const Hotel = () => {
 	const { id } = useParams()
@@ -11,26 +18,27 @@ const Hotel = () => {
 	const [isAdmin, setIsAdmin] = useState(false)
 
 	useEffect(() => {
-		getHotel({ id: id })
+		const tokenCookie = document.cookie
+			.split('; ')
+			.find(row => row.startsWith('token='))
+
+		let tokenValue
+		if (tokenCookie) {
+			tokenValue = tokenCookie.split('=')[1]
+			setToken(tokenValue)
+		}
+
+		getHotel({ id: id }, tokenValue)
 			.then(response => {
-				console.log(response.data)
 				setHotel(response.data)
 			})
 			.catch(err => {
 				setErrorMessage(err.response.data.message)
 			})
 
-		const tokenCookie = document.cookie
-			.split('; ')
-			.find(row => row.startsWith('token='))
-
-		if (tokenCookie) {
-			const tokenValue = tokenCookie.split('=')[1]
-			setToken(tokenValue)
-
+		if (tokenValue) {
 			validateAdmin({ token: tokenValue })
 				.then(response => {
-					console.log(response.data.isValid)
 					setIsAdmin(response.data.isValid)
 				})
 				.catch(err => {
@@ -38,6 +46,35 @@ const Hotel = () => {
 				})
 		}
 	}, [id])
+
+	const handleChangeFavourite = () => {
+		setHotel(prevHotel => ({
+			...prevHotel,
+			isFavourite: !prevHotel.isFavourite,
+		}))
+	}
+
+	const handleFavourite = () => {
+		if (!token) {
+			navigate('/login')
+		}
+		const decodedToken = jwtDecode(token)
+		const user = {
+			login: decodedToken.username,
+			role: decodedToken.role,
+			id: decodedToken.user_id,
+		}
+		if (hotel.isFavourite) {
+			console.log(hotel.id)
+			deleteFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(
+				() => handleChangeFavourite()
+			)
+		} else {
+			addFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(() =>
+				handleChangeFavourite()
+			)
+		}
+	}
 
 	const handleDelete = e => {
 		e.preventDefault()
@@ -73,15 +110,35 @@ const Hotel = () => {
 							<div className='card mb-3 shadow'>
 								<div className='col-md-12'>
 									<div className='d-flex justify-content-center align-items-center mb-4 mt-4'>
-										<img
-											src={`${hotel.imageUrl}`}
-											alt='Hotel'
-											style={{
-												width: '300px',
-												height: '300px',
-												objectFit: 'cover',
-											}}
-										/>
+										<div style={{ position: 'relative' }}>
+											<img
+												src={`${hotel.imageUrl}`}
+												alt='Hotel'
+												style={{
+													width: '300px',
+													height: '300px',
+													objectFit: 'cover',
+												}}
+											/>
+											<div
+												style={{
+													position: 'absolute',
+													top: '10px',
+													right: '10px',
+													cursor: 'pointer',
+												}}
+											>
+												<img
+													src={
+														hotel.isFavourite
+															? '/img/heart-liked.svg'
+															: '/img/heart-unliked.svg'
+													}
+													onClick={handleFavourite}
+													alt='Unliked'
+												/>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div className='row g-0'>

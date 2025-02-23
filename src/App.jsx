@@ -4,6 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import AddHotel from './components/AddHotel'
 import EditHotel from './components/EditHotel'
 import EditUser from './components/EditUser'
+import FavouriteHotels from './components/FavouriteHotels'
 import Home from './components/Home'
 import Hotel from './components/Hotel'
 import Hotels from './components/Hotels'
@@ -27,6 +28,10 @@ const App = () => {
 				<Route path='/hotels/:id' element={<Hotel />} />
 				<Route path='/hotels/create' element={<AddHotel />} />
 				<Route path='/hotels/:id/edit' element={<EditHotel />} />
+				<Route
+					path='/users/:id/favourite'
+					element={<FavouriteHotels />}
+				/>
 			</Routes>
 		</Router>
 	)

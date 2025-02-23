@@ -80,7 +80,10 @@ const Navbar = ({ userRole, id }) => {
 								aria-labelledby='navbarDropdown'
 							>
 								{isLoggedIn ? (
-									<Logout id={id} />
+									<div>
+										<Logout id={id} />
+										<Link></Link>
+									</div>
 								) : (
 									<li>
 										<Link

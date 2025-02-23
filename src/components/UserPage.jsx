@@ -14,7 +14,6 @@ const UserPage = () => {
 		deleteUser({ id: id, token: token })
 			.then(() => navigate('/login'))
 			.catch(err => {
-				console.error('Ошибка удаления:', err)
 				setErrorMessage(
 					err.response
 						? err.response.data.message
