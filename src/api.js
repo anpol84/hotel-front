@@ -25,7 +25,6 @@ export const getUser = userData => {
 }
 
 export const getHotel = (id, token) => {
-	console.log(token)
 	return axios.get(`${API_URL}/hotels/${id.id}`, {
 		headers: { token: token },
 	})
@@ -90,4 +89,40 @@ export const getFavouriteHotels = (userId, token) => {
 	return axios.get(`${API_URL}/hotels/favourite/${userId}`, {
 		headers: { token: token },
 	})
+}
+
+export const getHotelFeedbacks = hotelId => {
+	return axios.get(`${API_URL}/feedback?hotelId=${hotelId}`)
+}
+export const getFeedback = (feedbackId, token) => {
+	return axios.get(`${API_URL}/feedback/${feedbackId}`, {
+		headers: { token: token },
+	})
+}
+
+export const deleteHotelFeedback = (feedbackId, token) => {
+	return axios.delete(`${API_URL}/feedback/${feedbackId}`, {
+		headers: { token: token },
+	})
+}
+
+export const editHotelFeedback = (feedbackId, body, token) => {
+	return axios.put(`${API_URL}/feedback/${feedbackId}`, body, {
+		headers: { token: token },
+	})
+}
+
+export const createFeedback = (body, token) => {
+	return axios.post(`${API_URL}/feedback`, body, {
+		headers: { token: token },
+	})
+}
+
+export const getFilteredHotels = (body, token) => {
+	return axios.get(
+		`${API_URL}/hotels/filter?minPrice=${body.minPrice}&city=${body.city}`,
+		{
+			headers: { token: token },
+		}
+	)
 }

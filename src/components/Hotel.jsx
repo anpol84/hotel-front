@@ -5,7 +5,9 @@ import {
 	addFavouriteHotel,
 	deleteFavouriteHotel,
 	deleteHotel,
+	deleteHotelFeedback,
 	getHotel,
+	getHotelFeedbacks,
 	validateAdmin,
 } from '../api.js'
 
@@ -15,7 +17,10 @@ const Hotel = () => {
 	const [errorMessage, setErrorMessage] = useState('')
 	const [token, setToken] = useState('')
 	const [hotel, setHotel] = useState(null)
+	const [feedbacks, setFeedbacks] = useState([])
 	const [isAdmin, setIsAdmin] = useState(false)
+	const [user, setUser] = useState(null)
+	const [haveFeedback, setHaveFeedback] = useState(false)
 
 	useEffect(() => {
 		const tokenCookie = document.cookie
@@ -23,14 +28,36 @@ const Hotel = () => {
 			.find(row => row.startsWith('token='))
 
 		let tokenValue
+		let user
 		if (tokenCookie) {
 			tokenValue = tokenCookie.split('=')[1]
 			setToken(tokenValue)
+			const decodedToken = jwtDecode(tokenValue)
+			user = {
+				login: decodedToken.username,
+				role: decodedToken.role,
+				id: decodedToken.user_id,
+			}
+			setUser(user)
 		}
 
 		getHotel({ id: id }, tokenValue)
 			.then(response => {
 				setHotel(response.data)
+			})
+			.catch(err => {
+				setErrorMessage(err.response.data.message)
+			})
+		getHotelFeedbacks(id)
+			.then(response => {
+				setFeedbacks(response.data.hotels)
+				if (user != null) {
+					setHaveFeedback(
+						response.data.hotels
+							.map(hotel => hotel.userLogin)
+							.some(login => login === user.login)
+					)
+				}
 			})
 			.catch(err => {
 				setErrorMessage(err.response.data.message)
@@ -58,14 +85,7 @@ const Hotel = () => {
 		if (!token) {
 			navigate('/login')
 		}
-		const decodedToken = jwtDecode(token)
-		const user = {
-			login: decodedToken.username,
-			role: decodedToken.role,
-			id: decodedToken.user_id,
-		}
 		if (hotel.isFavourite) {
-			console.log(hotel.id)
 			deleteFavouriteHotel({ hotelId: hotel.id }, user.id, token).then(
 				() => handleChangeFavourite()
 			)
@@ -89,9 +109,39 @@ const Hotel = () => {
 			})
 	}
 
+	const handleDeleteFeedback = (e, id, userLogin) => {
+		e.preventDefault()
+		deleteHotelFeedback(id, token)
+			.then(() => {
+				setFeedbacks(prevData =>
+					prevData.filter(feedback => feedback.id !== id)
+				)
+				if (userLogin == user.login) {
+					setHaveFeedback(false)
+				}
+			})
+			.catch(err => {
+				setErrorMessage(
+					err.response
+						? err.response.data.message
+						: 'Ошибка удаления отелей'
+				)
+			})
+	}
+
 	const handleEdit = e => {
 		e.preventDefault()
 		navigate(`/hotels/${id}/edit`)
+	}
+
+	const handleCreateFeedback = e => {
+		e.preventDefault()
+		navigate(`/hotels/${id}/feedback`)
+	}
+
+	const handleEditFeedback = (e, feedbackId) => {
+		e.preventDefault()
+		navigate(`/feedback/${feedbackId}`, { state: { id: id } })
 	}
 
 	return (
@@ -450,6 +500,92 @@ const Hotel = () => {
 								)}
 							</div>
 						</div>
+					</div>
+					<div
+						className='mt-4'
+						style={{
+							border: '1px solid #ccc',
+							padding: '15px',
+							margin: '10px',
+							borderRadius: '5px',
+						}}
+					>
+						<h5>Отзывы на отель</h5>
+						{!haveFeedback && (
+							<button
+								className='btn btn-info btn mb-2'
+								onClick={handleCreateFeedback}
+							>
+								Добавить отзыв
+							</button>
+						)}
+						{feedbacks && feedbacks.length > 0 ? (
+							feedbacks.map((feedback, index) => (
+								<div
+									key={index}
+									className='review-card mb-3 p-3 border rounded'
+								>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+										}}
+									>
+										<div>{feedback.userLogin}</div>
+										<div>{feedback.createdAt}</div>
+									</div>
+									<div style={{ marginTop: '10px' }}>
+										{feedback.body}
+									</div>
+									<div
+										style={{
+											marginTop: '10px',
+											fontWeight: 'bold',
+										}}
+									>
+										Оценка: {feedback.mark}/5
+									</div>
+									{(isAdmin ||
+										user.login === feedback.userLogin) && (
+										<div
+											style={{
+												display: 'flex',
+												justifyContent: 'center',
+												marginTop: '10px',
+											}}
+										>
+											<button
+												className='btn btn-danger btn-sm'
+												onClick={e => {
+													e.preventDefault()
+													handleDeleteFeedback(
+														e,
+														feedback.id,
+														feedback.userLogin
+													)
+												}}
+											>
+												Удалить отзыв
+											</button>
+											<button
+												className='btn btn-warning btn-sm'
+												onClick={e =>
+													handleEditFeedback(
+														e,
+														feedback.id
+													)
+												}
+												style={{ marginLeft: '10px' }}
+											>
+												Редактировать отзыв
+											</button>
+										</div>
+									)}
+								</div>
+							))
+						) : (
+							<p>Нет отзывов на этот отель.</p>
+						)}
 					</div>
 				</div>
 			) : (

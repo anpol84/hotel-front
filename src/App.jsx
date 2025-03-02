@@ -2,9 +2,12 @@ import React from 'react'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import AddHotel from './components/AddHotel'
+import CreateFeedback from './components/CreateFeedback'
+import EditFeedback from './components/EditFeedback'
 import EditHotel from './components/EditHotel'
 import EditUser from './components/EditUser'
 import FavouriteHotels from './components/FavouriteHotels'
+import FilteredHotels from './components/FilteredHotels'
 import Home from './components/Home'
 import Hotel from './components/Hotel'
 import Hotels from './components/Hotels'
@@ -32,6 +35,12 @@ const App = () => {
 					path='/users/:id/favourite'
 					element={<FavouriteHotels />}
 				/>
+				<Route
+					path='/hotels/:id/feedback'
+					element={<CreateFeedback />}
+				/>
+				<Route path='/feedback/:id' element={<EditFeedback />} />
+				<Route path='/hotels/filtered' element={<FilteredHotels />} />
 			</Routes>
 		</Router>
 	)
