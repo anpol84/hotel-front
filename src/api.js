@@ -126,3 +126,13 @@ export const getFilteredHotels = (body, token) => {
 		}
 	)
 }
+
+export const askGpt = (query, token) => {
+	return axios.post(
+		`${API_URL}/gpt`,
+		{ query: query },
+		{
+			headers: { token: token },
+		}
+	)
+}

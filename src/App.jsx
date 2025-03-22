@@ -8,6 +8,7 @@ import EditHotel from './components/EditHotel'
 import EditUser from './components/EditUser'
 import FavouriteHotels from './components/FavouriteHotels'
 import FilteredHotels from './components/FilteredHotels'
+import GptResponse from './components/GptResponse'
 import Home from './components/Home'
 import Hotel from './components/Hotel'
 import Hotels from './components/Hotels'
@@ -41,6 +42,7 @@ const App = () => {
 				/>
 				<Route path='/feedback/:id' element={<EditFeedback />} />
 				<Route path='/hotels/filtered' element={<FilteredHotels />} />
+				<Route path='/hotels/gpt' element={<GptResponse />} />
 			</Routes>
 		</Router>
 	)

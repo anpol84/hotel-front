@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { editUser } from '../api'
-import useUser from '../hooks/useUser'
+import useUser from '../hooks/UseUser'
 
 const EditUser = () => {
 	const { id } = useParams()

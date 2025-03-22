@@ -26,6 +26,7 @@ const FilteredHotels = () => {
 	const [selectedRoomPeople, setSelectedRoomPeople] = useState([])
 	const [selectedRoomViews, setSelectedRoomViews] = useState([])
 	const [selectedRoomTypes, setSelectedRoomTypes] = useState([])
+	const notFoundHotels = location.state.isError
 
 	const additionsList = [
 		{ label: 'Wifi', name: 'WIFI' },
@@ -539,6 +540,14 @@ const FilteredHotels = () => {
 						))}
 					</div>
 				</div>
+				{notFoundHotels && (
+					<Col md={6} className='mb-3 mb-md-0'>
+						<p>
+							К сожалению, подходящих отелей найдено не было, но
+							вот наши лучшие отели!
+						</p>
+					</Col>
+				)}
 				<Row>
 					<Col
 						md={6}

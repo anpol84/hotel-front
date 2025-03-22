@@ -1,7 +1,7 @@
 import { React, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { deleteUser } from '../api'
-import useUser from '../hooks/useUser'
+import useUser from '../hooks/UseUser'
 
 const UserPage = () => {
 	const { id } = useParams()

@@ -1,9 +1,16 @@
-FROM node:15.12.0
+FROM node:current-slim
 
-WORKDIR /app
+WORKDIR /client
 
-ADD . .
+COPY /src /client/src
+COPY index.html /client/
+COPY package*.json /client/
+COPY vite.config.js /client/
 
-RUN npm install
+RUN npm i && npm cache clean --force \
+	&& npm i @esbuild/linux-x64 esbuild-linux-64 \
+	&& npm run build
 
-CMD ["npm", "run", "dev"]
+EXPOSE 90
+
+CMD ["npm", "run", "preview"]

@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getFilteredHotels, validateToken } from '../api.js'
+import { askGpt, getFilteredHotels, validateToken } from '../api.js'
 
 const HotelSearch = () => {
 	const [hotel, setHotel] = useState({
 		city: '',
 		minPrice: '',
 	})
+
+	const [query, setQuery] = useState('')
 
 	const navigate = useNavigate()
 
@@ -23,7 +25,12 @@ const HotelSearch = () => {
 		setHotel({ ...hotel, [name]: value })
 	}
 
-	const handleSubmit = async e => {
+	const handleGptQueryChange = e => {
+		console.log(e)
+		setQuery(e.target.value)
+	}
+
+	const handleSubmit = e => {
 		e.preventDefault()
 		const tokenCookie = document.cookie
 			.split('; ')
@@ -42,6 +49,34 @@ const HotelSearch = () => {
 		getFilteredHotels(hotel, tokenCookie.split('=')[1])
 			.then(response => {
 				navigate('/hotels/filtered', { state: response.data })
+			})
+			.catch(error => {
+				setErrorMessage(error.response.data.message)
+			})
+		setTimeout(() => {
+			setErrorMessage('')
+			setSuccessMessage('')
+		}, 5000)
+	}
+	const handleGptQuery = e => {
+		e.preventDefault()
+		const tokenCookie = document.cookie
+			.split('; ')
+			.find(row => row.startsWith('token='))
+
+		if (tokenCookie) {
+			const tokenValue = tokenCookie.split('=')[1]
+			validateToken({ token: tokenValue }).then(response => {
+				if (response.data.isValid == false) {
+					navigate('/login')
+				}
+			})
+		} else {
+			navigate('/login')
+		}
+		askGpt(query, tokenCookie.split('=')[1])
+			.then(response => {
+				navigate('/hotels/gpt', { state: response.data })
 			})
 			.catch(error => {
 				setErrorMessage(error.response.data.message)
@@ -92,13 +127,45 @@ const HotelSearch = () => {
 									onChange={handleHotelInputChange}
 								/>
 							</div>
-
 							<div className='d-grid gap-2 mt-2'>
 								<button
 									type='submit'
 									className='btn btn-outline-primary'
 								>
 									Search hotel
+								</button>
+							</div>
+						</form>
+					</div>
+
+					<div className='col-md-4 col-lg-6'>
+						<form
+							onSubmit={handleGptQuery}
+							className='d-flex flex-column'
+						>
+							<div className='mb-3'>
+								<label
+									htmlFor='gptQuery'
+									className='form-label'
+								>
+									Ask GPT
+								</label>
+								<textarea
+									required
+									className='form-control'
+									id='gptQuery'
+									name='gptQuery'
+									rows='4'
+									value={query}
+									onChange={handleGptQueryChange}
+								/>
+							</div>
+							<div className='d-grid gap-2 mt-2'>
+								<button
+									type='submit'
+									className='btn btn-outline-secondary'
+								>
+									Ask GPT
 								</button>
 							</div>
 						</form>
