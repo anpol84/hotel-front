@@ -1,0 +1,178 @@
+.root {
+	margin: 3% auto;
+	display: flex;
+	justify-content: center;
+	.header {
+		text-align: center;
+		font-family: var(--second-family);
+		font-weight: 400;
+		font-size: 30px;
+		color: #000;
+	}
+	.addButton {
+		border-radius: 15px;
+		padding: 6px 23px;
+		width: 200px;
+		height: 40px;
+		background: #ff780a;
+		font-family: var(--second-family);
+		font-weight: 700;
+		font-size: 16px;
+		text-transform: uppercase;
+		color: #f6f6f6;
+		border: none;
+		margin-bottom: 20px;
+	}
+	.formInput {
+		border-radius: 13px;
+		width: 500px;
+		height: 50px;
+		font-family: var(--second-family);
+		font-weight: 400;
+		font-size: 16px;
+		color: #838383;
+		background: #fff;
+		border: 1px solid #ccc;
+		box-shadow: -2px 2px 8px 1px rgba(0, 0, 0, 0.16);
+		margin-bottom: 3%;
+		padding: 2%;
+	}
+	.complexInput {
+		border-radius: 13px;
+		margin-bottom: 3%;
+		border: 1px solid #ccc;
+		box-shadow: -2px 2px 8px 1px rgba(0, 0, 0, 0.16);
+		color: #838383;
+		padding: 4%;
+		.label {
+			font-family: var(--second-family);
+			font-weight: 400;
+			font-size: 20px;
+			color: #000;
+			display: block;
+		}
+		.formInputComplex {
+			border-radius: 13px;
+			margin-top: 10px;
+			width: 460px;
+			height: 50px;
+			font-family: var(--second-family);
+			font-weight: 400;
+			font-size: 16px;
+			color: #838383;
+			background: #fff;
+			border: 1px solid #ccc;
+			box-shadow: -2px 2px 8px 1px rgba(0, 0, 0, 0.16);
+			margin-bottom: 3%;
+			padding: 3%;
+		}
+		.complexButtons {
+			display: flex;
+			justify-content: space-between;
+			.complexAddButton {
+				width: 220px;
+				height: 42px;
+				border: none;
+				border-radius: 10px;
+				background: #d5d4d4;
+				font-family: var(--second-family);
+				font-weight: 500;
+				font-size: 14px;
+				color: #000;
+			}
+			.complexRemoveButton {
+				width: 230px;
+				height: 42px;
+				border: none;
+				border-radius: 10px;
+				background: #f25454;
+				font-family: var(--second-family);
+				font-weight: 500;
+				font-size: 14px;
+				color: #000;
+			}
+		}
+		.complexList {
+			margin-top: 15px;
+			.complexListHeader {
+				font-family: var(--second-family);
+				font-weight: 600;
+				font-size: 18px;
+				color: #000;
+			}
+			.complexListItem {
+				padding-left: 15px;
+				font-family: var(--second-family);
+				font-weight: 400;
+				font-size: 14px;
+				color: #000;
+			}
+		}
+	}
+}
+
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 3%;
+		margin-left: 1%;
+	}
+}
+.success {
+	padding: 0.8%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #6be637;
+	background: #fff;
+
+	.successText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #6be637;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 8%;
+		margin-left: 4%;
+	}
+}

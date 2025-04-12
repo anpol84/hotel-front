@@ -1,0 +1,107 @@
+.root {
+	margin: 0 auto;
+	.headerText {
+		margin-top: 50px;
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.5rem;
+		color: #000;
+		text-align: center;
+	}
+	.form {
+		margin: 0 auto;
+		width: 569px;
+
+		.formInput {
+			border: 1px solid #b2b2b2;
+			border-radius: 7px;
+			width: 569px;
+			height: 49px;
+			background: #f6f6f6;
+			font-family: var(--second-family);
+			padding: 7px;
+		}
+		.formButton {
+			border-radius: 9px;
+			padding: 3px 13px;
+			width: 195px;
+			height: 39px;
+			background: #000;
+			border: none;
+			font-family: var(--second-family);
+			font-weight: 700;
+			font-size: 0.9rem;
+			text-transform: uppercase;
+			color: #f6f6f6;
+			margin-top: 3%;
+			margin-left: 66%;
+		}
+	}
+}
+
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 2%;
+		margin-left: 1%;
+	}
+}
+
+.success {
+	padding: 0.8%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #6be637;
+	background: #fff;
+
+	.successText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #6be637;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 4%;
+		margin-left: 2%;
+	}
+}

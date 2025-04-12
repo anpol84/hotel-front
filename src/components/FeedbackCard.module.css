@@ -1,0 +1,92 @@
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+
+.card {
+	width: 405px;
+	position: relative;
+	height: 230px;
+	border-radius: 12px;
+	border: 1px solid #c9c9c9;
+	margin-right: 2%;
+	margin-bottom: 2%;
+
+	padding: 2%;
+	.cardHeader {
+		display: flex;
+		.headerContent {
+			margin-left: 2%;
+			.userLogin {
+				font-family: var(--second-family);
+				font-weight: 600;
+				font-size: 20px;
+				line-height: 24px;
+				color: #000000;
+				margin: 0;
+			}
+		}
+	}
+	.feedbackBody {
+		margin-top: 1%;
+		width: 348px;
+		height: 95px;
+	}
+	.cardFooter {
+		.feedbackButtons {
+			width: 80%;
+			.editFeedback {
+				width: 140px;
+				height: 30px;
+
+				background: #000000;
+				border-radius: 11px;
+
+				font-family: var(--second-family);
+				font-weight: 700;
+				font-size: 11px;
+				line-height: 14px;
+				text-transform: uppercase;
+
+				color: #f6f6f6;
+			}
+			.deleteFeedback {
+				width: 97px;
+				height: 28px;
+
+				background: #f25454;
+				border-radius: 11px;
+				border: none;
+
+				font-family: var(--second-family);
+
+				font-weight: 700;
+				font-size: 11px;
+				line-height: 14px;
+
+				text-transform: uppercase;
+
+				color: #f6f6f6;
+				margin-left: 3%;
+			}
+			display: inline;
+		}
+	}
+	.date {
+		position: absolute;
+		font-family: var(--second-family);
+
+		font-weight: 500;
+		font-size: 12px;
+
+		color: #c9c9c9;
+		bottom: 20px;
+		right: 28px;
+	}
+}
+
+.own {
+	background: #c0dcff;
+}

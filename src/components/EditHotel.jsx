@@ -1,6 +1,9 @@
+import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { editHotel, getHotel, validateToken } from '../api'
+import styles from './EditHotel.module.css'
+import Navbar from './Navbar'
 
 const EditHotel = () => {
 	const { id } = useParams()
@@ -11,6 +14,14 @@ const EditHotel = () => {
 		{ id: 4, name: 'AIRPORT' },
 		{ id: 5, name: 'RAILWAY' },
 	]
+
+	const positionDict = {
+		CENTER: 'В центре',
+		PARK: 'Рядом с парком',
+		SEA: 'Рядом с море',
+		AIRPORT: 'Рядом с аэропортом',
+		RAILWAY: 'Рядом с вокзалом',
+	}
 
 	const additionsList = [
 		{ id: 1, name: 'WIFI' },
@@ -23,6 +34,17 @@ const EditHotel = () => {
 		{ id: 8, name: 'FITNESS' },
 	]
 
+	const additionDict = {
+		WIFI: 'Wi-Fi',
+		PARKING: 'Парковка',
+		RESTAURANT: 'Ресторан',
+		BEACH: 'Пляж',
+		POOL: 'Бассейн',
+		AQUA_PARK: 'Аквапарк',
+		SAUNA: 'Сауна',
+		FITNESS: 'Тренажерный зал',
+	}
+
 	const roomPeopleList = [
 		{ id: 1, type: 'SINGLE' },
 		{ id: 2, type: 'DOUBLE' },
@@ -31,12 +53,27 @@ const EditHotel = () => {
 		{ id: 5, type: 'TRIPLE' },
 	]
 
+	const roomPeopleDict = {
+		SINGLE: 'На одного',
+		DOUBLE: 'На двоих с 2 кроватями',
+		TWIN: 'На двоих с 1 кроватью',
+		DBL_EXB: 'На двоих с ребенком',
+		TRIPLE: 'На троих',
+	}
+
 	const roomViewsList = [
 		{ id: 1, type: 'SEA_VIEW' },
 		{ id: 2, type: 'CITY_VIEW' },
 		{ id: 3, type: 'GARDEN_VIEW' },
 		{ id: 4, type: 'POOL_VIEW' },
 	]
+
+	const roomViewsDict = {
+		SEA_VIEW: 'На море',
+		CITY_VIEW: 'На город',
+		GARDEN_VIEW: 'На природу',
+		POOL_VIEW: 'На бассейн',
+	}
 
 	const roomTypesList = [
 		{ id: 1, type: 'STANDARD' },
@@ -49,6 +86,18 @@ const EditHotel = () => {
 		{ id: 8, type: 'PRESIDENTIAL_SUITE' },
 		{ id: 9, type: 'HONEYMOON_SUITE' },
 	]
+
+	const roomTypesDict = {
+		STANDARD: 'Стандартный',
+		SUPERIOR: 'Стандартный+',
+		STUDIO: 'Студия',
+		FAMILY_ROOM: 'С кухней',
+		FAMILY_STUDIO: 'Студия с кухней',
+		DELUX: 'Делюкс',
+		SUITE: 'Премиум',
+		PRESIDENTIAL_SUITE: 'Президентский',
+		HONEYMOON_SUITE: 'Для молодоженов',
+	}
 
 	const [newHotel, setNewHotel] = useState({
 		city: '',
@@ -83,6 +132,8 @@ const EditHotel = () => {
 
 	const navigate = useNavigate()
 
+	const [user, setUser] = useState({ role: [], id: null, login: 'Гость' })
+
 	const handleHotelInputChange = e => {
 		const name = e.target.name
 		let value = e.target.value
@@ -109,6 +160,12 @@ const EditHotel = () => {
 					if (response.data.isValid == false) {
 						navigate('/login')
 					}
+					const decodedToken = jwtDecode(tokenValue)
+					setUser({
+						login: decodedToken.username,
+						role: decodedToken.role,
+						id: decodedToken.user_id,
+					})
 				})
 				.catch(err => {
 					setErrorMessage(err.response.data.message)
@@ -158,544 +215,561 @@ const EditHotel = () => {
 
 	return (
 		<>
-			<section className='container mt-5 mb-5'>
-				<div className='row justify-content-center'>
-					<div className='col-md-8 col-lg-6'>
-						<h2 className='mt-5 mb-2'>Edit Hotel</h2>
-						{successMessage && (
-							<div className='alert alert-success fade show'>
-								{successMessage}
-							</div>
-						)}
+			<Navbar userRole={user.role} id={user.id} />
+			{errorMessage && (
+				<div className={styles.error}>
+					<svg
+						width='65'
+						height='65'
+						viewBox='0 0 65 65'
+						fill='none'
+						xmlns='http://www.w3.org/2000/svg'
+					>
+						<path
+							d='M29.9019 4.5C31.0566 2.5 33.9434 2.5 35.0981 4.5L58.0477 44.25C59.2024 46.25 57.7591 48.75 55.4497 48.75H9.55033C7.24093 48.75 5.79755 46.25 6.95225 44.25L29.9019 4.5Z'
+							fill='#FF780A'
+						/>
+						<path
+							d='M29.9648 34.4106L29.1431 23.228V18.8936H35.7495V23.228L34.8794 34.4106H29.9648ZM29.9326 41.4521C29.2988 40.8721 28.9819 40.061 28.9819 39.019C28.9819 37.9878 29.2988 37.1821 29.9326 36.6021C30.5557 36.022 31.3936 35.7319 32.4463 35.7319C33.499 35.7319 34.3423 36.022 34.9761 36.6021C35.5991 37.1821 35.9106 37.9878 35.9106 39.019C35.9106 40.061 35.5991 40.8721 34.9761 41.4521C34.3423 42.0322 33.499 42.3223 32.4463 42.3223C31.3936 42.3223 30.5557 42.0322 29.9326 41.4521Z'
+							fill='white'
+						/>
+					</svg>
 
-						{errorMessage && (
-							<div className='alert alert-danger fade show'>
-								{errorMessage}
-							</div>
-						)}
+					<p className={styles.errorText}>{errorMessage}</p>
+				</div>
+			)}
+			<section className={styles.root}>
+				{successMessage && (
+					<div className={styles.success}>
+						<svg
+							width='56'
+							height='54'
+							viewBox='0 0 56 54'
+							fill='none'
+							xmlns='http://www.w3.org/2000/svg'
+						>
+							<path
+								d='M6 29.9223L27.2461 48L50 6'
+								stroke='#6BE637'
+								stroke-width='12'
+								stroke-linecap='round'
+								stroke-linejoin='round'
+							/>
+						</svg>
 
-						<form onSubmit={handleSubmit}>
-							<div className='mb-3'>
-								<label htmlFor='name' className='form-label'>
-									Hotel name
-								</label>
-								<input
-									required
-									type='text'
-									className='form-control'
-									id='name'
-									name='name'
-									value={newHotel.name}
-									onChange={handleHotelInputChange}
-								/>
-							</div>
-							<div className='mb-3'>
-								<label htmlFor='city' className='form-label'>
-									City
-								</label>
-								<input
-									required
-									type='text'
-									className='form-control'
-									id='city'
-									name='city'
-									value={newHotel.city}
-									onChange={handleHotelInputChange}
-								/>
-							</div>
-							<div className='mb-3'>
-								<label
-									htmlFor='imageUrl'
-									className='form-label'
-								>
-									Image Url
-								</label>
-								<input
-									required
-									type='text'
-									className='form-control'
-									id='imageUrl'
-									name='imageUrl'
-									value={newHotel.imageUrl}
-									onChange={handleHotelInputChange}
-								/>
-							</div>
-							<div className='mb-3'>
-								<label htmlFor='stars' className='form-label'>
-									Stars
-								</label>
-								<input
-									required
-									type='number'
-									className='form-control'
-									id='stars'
-									name='stars'
-									value={newHotel.stars}
-									onChange={handleHotelInputChange}
-									min='1'
-									max='5'
-								/>
-							</div>
-							<br />
-							<div className='border p-3 mb-3'>
-								<label
-									htmlFor='positionSelect'
-									className='form-label'
-								>
-									Select Position
-								</label>
-								<select
-									className='form-control'
-									id='positionSelect'
-									value={selectedPosition}
-									onChange={e =>
-										setSelectedPosition(e.target.value)
-									}
-								>
-									<option value='' disabled>
-										Select a position
+						<p className={styles.successText}>{successMessage}</p>
+					</div>
+				)}
+
+				<div>
+					<p className={styles.header}>
+						Редактирование карточки отеля
+					</p>
+
+					<form onSubmit={handleSubmit}>
+						<div>
+							<input
+								className={styles.formInput}
+								required
+								type='text'
+								id='name'
+								name='name'
+								value={newHotel.name}
+								onChange={handleHotelInputChange}
+								placeholder='Название отеля'
+							/>
+						</div>
+						<div>
+							<input
+								required
+								type='text'
+								className={styles.formInput}
+								id='city'
+								name='city'
+								value={newHotel.city}
+								onChange={handleHotelInputChange}
+								placeholder='Город'
+							/>
+						</div>
+						<div>
+							<input
+								required
+								type='text'
+								className={styles.formInput}
+								id='imageUrl'
+								name='imageUrl'
+								value={newHotel.imageUrl}
+								onChange={handleHotelInputChange}
+								placeholder='Url-адрес изображения'
+							/>
+						</div>
+						<div>
+							<input
+								required
+								type='number'
+								className={styles.formInput}
+								id='stars'
+								name='stars'
+								value={newHotel.stars}
+								onChange={handleHotelInputChange}
+								min='1'
+								max='5'
+								placeholder='Количество звезд'
+							/>
+						</div>
+						<div className={styles.complexInput}>
+							<label
+								htmlFor='positionSelect'
+								className={styles.label}
+							>
+								Выбор расположения отеля
+							</label>
+							<select
+								className={styles.formInputComplex}
+								id='positionSelect'
+								value={selectedPosition}
+								onChange={e =>
+									setSelectedPosition(e.target.value)
+								}
+							>
+								<option value='' disabled>
+									Выбрать
+								</option>
+								{positionsList.map(position => (
+									<option
+										key={position.id}
+										value={position.name}
+									>
+										{position.name}
 									</option>
-									{positionsList.map(position => (
-										<option
-											key={position.id}
-											value={position.name}
-										>
-											{position.name}
-										</option>
-									))}
-								</select>
-								<div className='d-grid gap-2 d-md-flex mt-2'>
-									<button
-										type='button'
-										className='btn btn-primary mt-2'
-										onClick={() => {
-											if (
-												selectedPosition &&
-												!newHotel.positions.includes(
-													selectedPosition
-												)
-											) {
-												setNewHotel(prev => ({
-													...prev,
-													positions: [
-														...prev.positions,
-														selectedPosition,
-													],
-												}))
-												setSelectedPosition('')
-											}
-										}}
-									>
-										Add Position
-									</button>
-									<button
-										type='button'
-										className='btn btn-danger mt-2'
-										onClick={() => {
-											setNewHotel(prev => ({
-												...prev,
-												positions: [],
-											}))
-										}}
-									>
-										Clear All Positions
-									</button>
-								</div>
-								<div className='mt-3'>
-									<p>Current Positions:</p>
-									<ul>
-										{newHotel.positions.map(
-											(position, index) => (
-												<li key={index}>{position}</li>
-											)
-										)}
-									</ul>
-								</div>
-							</div>
-							<br />
-							<div className='border p-3 mb-3'>
-								<label
-									htmlFor='additionSelect'
-									className='form-label'
-								>
-									Select Addition
-								</label>
-								<select
-									className='form-control'
-									id='additionSelect'
-									value={selectedAddition}
-									onChange={e =>
-										setSelectedAddition(e.target.value)
-									}
-								>
-									<option value='' disabled>
-										Select a addition
-									</option>
-									{additionsList.map(addition => (
-										<option
-											key={addition.id}
-											value={addition.name}
-										>
-											{addition.name}
-										</option>
-									))}
-								</select>
-								<div className='d-grid gap-2 d-md-flex mt-2'>
-									<button
-										type='button'
-										className='btn btn-primary mt-2'
-										onClick={() => {
-											if (
-												selectedAddition &&
-												!newHotel.additions.includes(
-													selectedAddition
-												)
-											) {
-												setNewHotel(prev => ({
-													...prev,
-													additions: [
-														...prev.additions,
-														selectedAddition,
-													],
-												}))
-												setSelectedAddition('')
-											}
-										}}
-									>
-										Add Addition
-									</button>
-									<button
-										type='button'
-										className='btn btn-danger mt-2'
-										onClick={() => {
-											setNewHotel(prev => ({
-												...prev,
-												additions: [],
-											}))
-										}}
-									>
-										Clear All Additions
-									</button>
-								</div>
-								<div className='mt-3'>
-									<p>Current Additions:</p>
-									<ul>
-										{newHotel.additions.map(
-											(addition, index) => (
-												<li key={index}>{addition}</li>
-											)
-										)}
-									</ul>
-								</div>
-							</div>
-
-							<div className='border p-3 mb-3'>
-								<p>Select Room People</p>
-
-								<select
-									className='form-control'
-									value={selectedRoomPeople}
-									onChange={e =>
-										setSelectedRoomPeople(e.target.value)
-									}
-								>
-									<option value='' disabled>
-										Select a room people
-									</option>
-									{roomPeopleList.map(roomPeople => (
-										<option
-											key={roomPeople.id}
-											value={roomPeople.type}
-										>
-											{roomPeople.type}
-										</option>
-									))}
-								</select>
-
-								<div className='mt-2'>
-									<label
-										htmlFor='roomPeoplePrice'
-										className='form-label'
-									>
-										Room People price
-									</label>
-									<input
-										type='number'
-										className='form-control'
-										id='roomPeoplePrice'
-										value={roomPeoplePrice}
-										onChange={e =>
-											setRoomPeoplePrice(e.target.value)
-										}
-										placeholder='Enter price'
-									/>
-								</div>
-
-								<div className='d-grid gap-2 d-md-flex mt-2'>
-									<button
-										type='button'
-										className='btn btn-primary mt-2'
-										onClick={() => {
-											if (selectedRoomPeople) {
-												setNewHotel(prev => ({
-													...prev,
-													roomPeople: [
-														...prev.roomPeople,
-														{
-															type: selectedRoomPeople,
-															price: parseFloat(
-																roomPeoplePrice
-															),
-														},
-													],
-												}))
-												setSelectedRoomPeople('')
-												setRoomPeoplePrice('')
-											}
-										}}
-									>
-										Add RoomPeople
-									</button>
-									<button
-										type='button'
-										className='btn btn-danger mt-2'
-										onClick={() => {
-											setNewHotel(prev => ({
-												...prev,
-												roomPeople: [],
-											}))
-										}}
-									>
-										Clear All Room People
-									</button>
-								</div>
-
-								<div className='mt-3'>
-									<h5>Current Room People:</h5>
-									<ul>
-										{newHotel.roomPeople.map(
-											(roomPeople, index) => (
-												<li key={index}>
-													Type: {roomPeople.type},
-													Price:
-													{roomPeople.price} руб
-												</li>
-											)
-										)}
-									</ul>
-								</div>
-							</div>
-
-							<div className='border p-3 mb-3'>
-								<p>Select Room View</p>
-
-								<select
-									className='form-control'
-									value={selectedRoomView}
-									onChange={e => {
-										setSelectedRoomView(e.target.value)
-									}}
-								>
-									<option value='' disabled>
-										Select a room view
-									</option>
-									{roomViewsList.map(roomView => (
-										<option
-											key={roomView.id}
-											value={roomView.type}
-										>
-											{roomView.type}
-										</option>
-									))}
-								</select>
-
-								<div className='mt-2'>
-									<label
-										htmlFor='roomViewPrice'
-										className='form-label'
-									>
-										Room View price
-									</label>
-									<input
-										type='number'
-										className='form-control'
-										id='roomViewPrice'
-										value={roomViewPrice}
-										onChange={e =>
-											setRoomViewPrice(e.target.value)
-										}
-										placeholder='Enter price'
-									/>
-								</div>
-
-								<div className='d-grid gap-2 d-md-flex mt-2'>
-									<button
-										type='button'
-										className='btn btn-primary mt-2'
-										onClick={() => {
-											if (selectedRoomView) {
-												setNewHotel(prev => ({
-													...prev,
-													roomViews: [
-														...prev.roomViews,
-														{
-															type: selectedRoomView,
-															price: parseFloat(
-																roomViewPrice
-															),
-														},
-													],
-												}))
-												setSelectedRoomView('')
-												setRoomViewPrice('')
-											}
-										}}
-									>
-										Add RoomView
-									</button>
-									<button
-										type='button'
-										className='btn btn-danger mt-2'
-										onClick={() => {
-											setNewHotel(prev => ({
-												...prev,
-												roomViews: [],
-											}))
-										}}
-									>
-										Clear All Room Views
-									</button>
-								</div>
-
-								<div className='mt-3'>
-									<h5>Current Room View:</h5>
-									<ul>
-										{newHotel.roomViews.map(
-											(roomView, index) => (
-												<li key={index}>
-													Type: {roomView.type},
-													Price:
-													{roomView.price} руб
-												</li>
-											)
-										)}
-									</ul>
-								</div>
-							</div>
-
-							<div className='border p-3 mb-3'>
-								<p>Select Room Type</p>
-
-								<select
-									className='form-control'
-									value={selectedRoomType}
-									onChange={e => {
-										setSelectedRoomType(e.target.value)
-									}}
-								>
-									<option value='' disabled>
-										Select a room type
-									</option>
-									{roomTypesList.map(roomType => (
-										<option
-											key={roomType.id}
-											value={roomType.type}
-										>
-											{roomType.type}
-										</option>
-									))}
-								</select>
-
-								<div className='mt-2'>
-									<label
-										htmlFor='roomTypePrice'
-										className='form-label'
-									>
-										Room Type price
-									</label>
-									<input
-										type='number'
-										className='form-control'
-										id='roomTypePrice'
-										value={roomTypePrice}
-										onChange={e =>
-											setRoomTypePrice(e.target.value)
-										}
-										placeholder='Enter price'
-									/>
-								</div>
-
-								<div className='d-grid gap-2 d-md-flex mt-2'>
-									<button
-										type='button'
-										className='btn btn-primary mt-2'
-										onClick={() => {
-											if (selectedRoomType) {
-												setNewHotel(prev => ({
-													...prev,
-													roomTypes: [
-														...prev.roomTypes,
-														{
-															type: selectedRoomType,
-															price: parseFloat(
-																roomTypePrice
-															),
-														},
-													],
-												}))
-												setSelectedRoomType('')
-												setRoomTypePrice('')
-											}
-										}}
-									>
-										Add RoomType
-									</button>
-									<button
-										type='button'
-										className='btn btn-danger mt-2'
-										onClick={() => {
-											setNewHotel(prev => ({
-												...prev,
-												roomTypes: [],
-											}))
-										}}
-									>
-										Clear All Room Types
-									</button>
-								</div>
-
-								<div className='mt-3'>
-									<h5>Current Room Type:</h5>
-									<ul>
-										{newHotel.roomTypes.map(
-											(roomType, index) => (
-												<li key={index}>
-													Type: {roomType.type},
-													Price:
-													{roomType.price} руб
-												</li>
-											)
-										)}
-									</ul>
-								</div>
-							</div>
-
-							<div className='d-grid gap-2 d-md-flex mt-2'>
-								<Link
-									to={`/hotels/${id}`}
-									className='btn btn-outline-info'
-								>
-									На страницу отеля
-								</Link>
+								))}
+							</select>
+							<div className={styles.complexButtons}>
 								<button
-									type='submit'
-									className='btn btn-outline-primary ml-5'
+									type='button'
+									className={styles.complexAddButton}
+									onClick={() => {
+										if (
+											selectedPosition &&
+											!newHotel.positions.includes(
+												selectedPosition
+											)
+										) {
+											setNewHotel(prev => ({
+												...prev,
+												positions: [
+													...prev.positions,
+													selectedPosition,
+												],
+											}))
+											setSelectedPosition('')
+										}
+									}}
 								>
-									Edit Hotel
+									Добавить расположение
+								</button>
+								<button
+									type='button'
+									className={styles.complexRemoveButton}
+									onClick={() => {
+										setNewHotel(prev => ({
+											...prev,
+											positions: [],
+										}))
+									}}
+								>
+									Удалить все расположения
 								</button>
 							</div>
-						</form>
-					</div>
+							<div className={styles.complexList}>
+								<p className={styles.complexListHeader}>
+									Выбранные расположения:
+								</p>
+								<ul className={styles.complexListItem}>
+									{newHotel.positions.map(
+										(position, index) => (
+											<li key={index}>
+												{positionDict[position]}
+											</li>
+										)
+									)}
+								</ul>
+							</div>
+						</div>
+						<div className={styles.complexInput}>
+							<label
+								htmlFor='additionSelect'
+								className={styles.label}
+							>
+								Выбор дополнений отеля
+							</label>
+							<select
+								className={styles.formInputComplex}
+								id='additionSelect'
+								value={selectedAddition}
+								onChange={e =>
+									setSelectedAddition(e.target.value)
+								}
+							>
+								<option value='' disabled>
+									Выбрать
+								</option>
+								{additionsList.map(addition => (
+									<option
+										key={addition.id}
+										value={addition.name}
+									>
+										{addition.name}
+									</option>
+								))}
+							</select>
+							<div className={styles.complexButtons}>
+								<button
+									type='button'
+									className={styles.complexAddButton}
+									onClick={() => {
+										if (
+											selectedAddition &&
+											!newHotel.additions.includes(
+												selectedAddition
+											)
+										) {
+											setNewHotel(prev => ({
+												...prev,
+												additions: [
+													...prev.additions,
+													selectedAddition,
+												],
+											}))
+											setSelectedAddition('')
+										}
+									}}
+								>
+									Добавить дополнение
+								</button>
+								<button
+									type='button'
+									className={styles.complexRemoveButton}
+									onClick={() => {
+										setNewHotel(prev => ({
+											...prev,
+											additions: [],
+										}))
+									}}
+								>
+									Удалить все дополнения
+								</button>
+							</div>
+							<div className={styles.complexList}>
+								<p className={styles.complexListHeader}>
+									Выбранные дополнения:
+								</p>
+								<ul className={styles.complexListItem}>
+									{newHotel.additions.map(
+										(addition, index) => (
+											<li key={index}>
+												{additionDict[addition]}
+											</li>
+										)
+									)}
+								</ul>
+							</div>
+						</div>
+						<div className={styles.complexInput}>
+							<label className={styles.label}>
+								Выбор комнаты по количеству людей
+							</label>
+
+							<select
+								className={styles.formInputComplex}
+								value={selectedRoomPeople}
+								onChange={e =>
+									setSelectedRoomPeople(e.target.value)
+								}
+							>
+								<option value='' disabled>
+									Выбрать
+								</option>
+								{roomPeopleList.map(roomPeople => (
+									<option
+										key={roomPeople.id}
+										value={roomPeople.type}
+									>
+										{roomPeople.type}
+									</option>
+								))}
+							</select>
+
+							<div>
+								<input
+									type='number'
+									style={{ marginTop: '1px' }}
+									className={styles.formInputComplex}
+									id='roomPeoplePrice'
+									value={roomPeoplePrice}
+									onChange={e =>
+										setRoomPeoplePrice(e.target.value)
+									}
+									placeholder='Введите цену'
+								/>
+							</div>
+
+							<div className={styles.complexButtons}>
+								<button
+									type='button'
+									className={styles.complexAddButton}
+									onClick={() => {
+										if (selectedRoomPeople) {
+											setNewHotel(prev => ({
+												...prev,
+												roomPeople: [
+													...prev.roomPeople,
+													{
+														type: selectedRoomPeople,
+														price: parseFloat(
+															roomPeoplePrice
+														),
+													},
+												],
+											}))
+											setSelectedRoomPeople('')
+											setRoomPeoplePrice('')
+										}
+									}}
+								>
+									Добавить комнату
+								</button>
+								<button
+									type='button'
+									className={styles.complexRemoveButton}
+									onClick={() => {
+										setNewHotel(prev => ({
+											...prev,
+											roomPeople: [],
+										}))
+									}}
+								>
+									Удалить все комнаты
+								</button>
+							</div>
+
+							<div className={styles.complexList}>
+								<p className={styles.complexListHeader}>
+									Выбранные комнаты по количеству людей:
+								</p>
+								<ul className={styles.complexListItem}>
+									{newHotel.roomPeople.map(
+										(roomPeople, index) => (
+											<li key={index}>
+												Тип:{' '}
+												{
+													roomPeopleDict[
+														roomPeople.type
+													]
+												}
+												, Цена: {roomPeople.price} руб.
+											</li>
+										)
+									)}
+								</ul>
+							</div>
+						</div>
+						<div className={styles.complexInput}>
+							<label className={styles.label}>
+								Выбор комнаты по виду из окна
+							</label>
+
+							<select
+								className={styles.formInputComplex}
+								value={selectedRoomView}
+								onChange={e => {
+									setSelectedRoomView(e.target.value)
+								}}
+							>
+								<option value='' disabled>
+									Выбрать
+								</option>
+								{roomViewsList.map(roomView => (
+									<option
+										key={roomView.id}
+										value={roomView.type}
+									>
+										{roomView.type}
+									</option>
+								))}
+							</select>
+
+							<div>
+								<input
+									style={{ marginTop: '1px' }}
+									type='number'
+									className={styles.formInputComplex}
+									id='roomViewPrice'
+									value={roomViewPrice}
+									onChange={e =>
+										setRoomViewPrice(e.target.value)
+									}
+									placeholder='Введите цену'
+								/>
+							</div>
+
+							<div className={styles.complexButtons}>
+								<button
+									type='button'
+									className={styles.complexAddButton}
+									onClick={() => {
+										if (selectedRoomView) {
+											setNewHotel(prev => ({
+												...prev,
+												roomViews: [
+													...prev.roomViews,
+													{
+														type: selectedRoomView,
+														price: parseFloat(
+															roomViewPrice
+														),
+													},
+												],
+											}))
+											setSelectedRoomView('')
+											setRoomViewPrice('')
+										}
+									}}
+								>
+									Добавить комнату
+								</button>
+								<button
+									type='button'
+									className={styles.complexRemoveButton}
+									onClick={() => {
+										setNewHotel(prev => ({
+											...prev,
+											roomViews: [],
+										}))
+									}}
+								>
+									Удалить все комнаты
+								</button>
+							</div>
+
+							<div className={styles.complexList}>
+								<p className={styles.complexListHeader}>
+									Выбранные комнаты по виду из окна:
+								</p>
+								<ul className={styles.complexListItem}>
+									{newHotel.roomViews.map(
+										(roomView, index) => (
+											<li key={index}>
+												Тип:{' '}
+												{roomViewsDict[roomView.type]},
+												Цена: {roomView.price} руб.
+											</li>
+										)
+									)}
+								</ul>
+							</div>
+						</div>
+						<div className={styles.complexInput}>
+							<label className={styles.label}>
+								Выбор комнаты по типу
+							</label>
+
+							<select
+								className={styles.formInputComplex}
+								value={selectedRoomType}
+								onChange={e => {
+									setSelectedRoomType(e.target.value)
+								}}
+							>
+								<option value='' disabled>
+									Выбрать
+								</option>
+								{roomTypesList.map(roomType => (
+									<option
+										key={roomType.id}
+										value={roomType.type}
+									>
+										{roomType.type}
+									</option>
+								))}
+							</select>
+
+							<div>
+								<input
+									style={{ marginTop: '1px' }}
+									type='number'
+									className={styles.formInputComplex}
+									id='roomTypePrice'
+									value={roomTypePrice}
+									onChange={e =>
+										setRoomTypePrice(e.target.value)
+									}
+									placeholder='Введите цену'
+								/>
+							</div>
+
+							<div className={styles.complexButtons}>
+								<button
+									type='button'
+									className={styles.complexAddButton}
+									onClick={() => {
+										if (selectedRoomType) {
+											setNewHotel(prev => ({
+												...prev,
+												roomTypes: [
+													...prev.roomTypes,
+													{
+														type: selectedRoomType,
+														price: parseFloat(
+															roomTypePrice
+														),
+													},
+												],
+											}))
+											setSelectedRoomType('')
+											setRoomTypePrice('')
+										}
+									}}
+								>
+									Добавить комнату
+								</button>
+								<button
+									type='button'
+									className={styles.complexRemoveButton}
+									onClick={() => {
+										setNewHotel(prev => ({
+											...prev,
+											roomTypes: [],
+										}))
+									}}
+								>
+									Удалить все комнаты
+								</button>
+							</div>
+
+							<div className={styles.complexList}>
+								<p className={styles.complexListHeader}>
+									Выбранные комнаты по типу:
+								</p>
+								<ul className={styles.complexListItem}>
+									{newHotel.roomTypes.map(
+										(roomType, index) => (
+											<li key={index}>
+												Тип:{' '}
+												{roomTypesDict[roomType.type]},
+												Цена: {roomType.price} руб.
+											</li>
+										)
+									)}
+								</ul>
+							</div>
+						</div>
+						<div>
+							<button type='submit' className={styles.addButton}>
+								Сохранить
+							</button>
+						</div>{' '}
+					</form>
 				</div>
 			</section>
 		</>

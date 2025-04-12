@@ -1,8 +1,8 @@
 import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { validateAdmin, validateToken } from '../api'
+import styles from './GptResponse.module.css'
 import HotelCard from './HotelCard'
 import Navbar from './Navbar'
 import Paginator from './Paginator'
@@ -72,7 +72,7 @@ const GptResponse = () => {
 	}
 
 	if (isLoading) {
-		return <div>Loading rooms........</div>
+		return <div>Загрузка........</div>
 	}
 	if (error) {
 		return <div className='text-danger'>Error : {error}</div>
@@ -110,56 +110,41 @@ const GptResponse = () => {
 	}
 
 	return (
-		<section className='container'>
+		<section>
 			<Navbar userRole={user.role} id={user.id} />
-			<br />
-			<Container>
-				<Row>
-					<Col md={6} className='mb-3 mb-md-0'>
-						<input
-							type='text'
-							placeholder='Поиск по названию'
-							value={searchQuery}
-							onChange={handleSearchChange}
-						/>
-					</Col>
-
+			<div className={styles.root}>
+				<div className={styles.searchHeader}>
+					<input
+						type='text'
+						placeholder='Поиск по названию'
+						value={searchQuery}
+						onChange={handleSearchChange}
+						className={styles.search}
+					/>
+				</div>
+				<div className={styles.headerText}>
 					{notFoundHotels && (
-						<Col md={6} className='mb-3 mb-md-0'>
-							<p>
-								К сожалению, подходящих отелей найдено не было,
-								но вот наши лучшие отели!
-							</p>
-						</Col>
+						<p>
+							К сожалению, подходящих отелей найдено не было, но
+							вот наши лучшие отели!
+						</p>
 					)}
-				</Row>
-
-				<Row>
-					<Col
-						md={6}
-						className='d-flex align-items-center justify-content-end'
-					>
-						<Paginator
-							currentPage={currentPage}
-							totalPages={totalPages}
-							onPageChange={handlePageNumber}
-						/>
-					</Col>
-				</Row>
-				<Row>{renderHotels()}</Row>
-				<Row>
-					<Col
-						md={6}
-						className='d-flex align-items-center justify-content-end'
-					>
-						<Paginator
-							currentPage={currentPage}
-							totalPages={totalPages}
-							onPageChange={handlePageNumber}
-						/>
-					</Col>
-				</Row>
-			</Container>
+					{!notFoundHotels && <p>Результаты поиска</p>}
+				</div>
+				<Paginator
+					currentPage={currentPage}
+					totalPages={totalPages}
+					onPageChange={handlePageNumber}
+				/>
+				<div className={styles.hotels}>{renderHotels()}</div>
+				<Paginator
+					currentPage={currentPage}
+					totalPages={totalPages}
+					onPageChange={handlePageNumber}
+				/>
+				<br />
+				<br />
+			</div>
 		</section>
 	)
 }

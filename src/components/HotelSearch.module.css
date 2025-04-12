@@ -1,0 +1,215 @@
+@import url('../fonts/tt-travels/stylesheet.css');
+.root {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin-top: 50px;
+}
+
+.filterFormDiv {
+	display: flex;
+	justify-content: center;
+	height: 250px;
+	width: 50%;
+
+	.filterForm {
+		width: 369px;
+		height: 165px;
+	}
+	.filterFormHeader {
+		text-align: center;
+		font-family: var(--second-family);
+		font-weight: 500;
+		font-size: 18px;
+		color: #000;
+		width: 100%;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.filterFormInputs {
+		display: flex;
+		justify-content: space-between;
+		.filterFormInput {
+			border-radius: 8px;
+			border: none;
+			padding: 6px 23px;
+			width: 180px;
+			height: 53px;
+			font-family: var(--second-family);
+			font-weight: 500;
+			font-size: 17px;
+			color: #5c5c5c;
+			background: #f0f0f0;
+		}
+	}
+
+	.filterFormButton {
+		margin: 0 auto;
+		display: block;
+		border-radius: 21px;
+		padding: 6px 23px;
+		width: 362px;
+		height: 55px;
+		background: #383838;
+		margin-top: 15px;
+		.buttonText {
+			font: 20px 'TT Travels', sans-serif;
+			font-weight: 700;
+			font-size: 20px;
+			text-transform: uppercase;
+			color: #f6f6f6;
+			text-align: center;
+			line-height: 40px;
+		}
+	}
+}
+
+.gptFormDiv {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, 0.3) 100%);
+	width: 1000px;
+	padding-bottom: 250px;
+	padding-top: 0;
+	padding-right: 0;
+	margin-right: 0;
+
+	.gptForm {
+		padding-right: -100px;
+		.gptFormHeader {
+			font-family: var(--second-family);
+			font-weight: 500;
+			font-size: 18px;
+			text-align: center;
+			width: 381px;
+			color: #000;
+			margin: 0 auto;
+			padding-top: 50px;
+			padding-bottom: 20px;
+		}
+		.gptFormTextArea {
+			border-radius: 13px;
+			width: 541px;
+			height: 115px;
+			background: #fff;
+			border: none;
+			padding: 14px;
+			margin: 0 auto;
+			display: block;
+			font-family: var(--second-family);
+			font-weight: 400;
+			font-size: 16px;
+			color: #838383;
+		}
+		.gptFormButton {
+			border-radius: 22px;
+			padding: 6px 24px;
+			width: 337px;
+			height: 53px;
+			background: #ff780a;
+			margin: 0 auto;
+			display: block;
+			border: none;
+			margin-top: 20px;
+			padding-bottom: 50px;
+			.gptFormButtonText {
+				font-family: var(--second-family);
+				font-weight: 700;
+				font-size: 20px;
+				text-transform: uppercase;
+				color: #f6f6f6;
+				text-align: center;
+				line-height: 40px;
+			}
+		}
+		border-radius: 32px;
+		width: 613px;
+		height: 374px;
+		box-shadow: -2px 2px 8px 1px rgba(0, 0, 0, 0.16);
+		background: rgba(240, 240, 240, 0.73);
+	}
+	.examplesDiv {
+		margin-top: 60px;
+		width: 346px;
+		height: 202px;
+
+		.examplesHeader {
+			font-family: var(--second-family);
+			font-weight: 500;
+			font-size: 18px;
+			color: #000;
+			margin: 0 auto;
+			display: block;
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		.example {
+			border-radius: 12px;
+			padding: 15px 25px;
+			width: 346px;
+			height: auto;
+			box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.13);
+			background: #fefefe;
+			margin-top: 10px;
+			.exampleText {
+				font-family: var(--second-family);
+				font-weight: 500;
+				font-size: 16px;
+				color: #000;
+				margin: 0 auto;
+				display: block;
+			}
+		}
+	}
+}
+
+.earth {
+	position: absolute;
+	z-index: -1;
+	margin-left: 300px;
+	display: block;
+}
+
+html,
+body {
+	margin: 0;
+	height: 100%;
+}
+
+:root {
+	--second-family: 'TT Travels', sans-serif;
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 2%;
+		margin-left: 1%;
+	}
+}

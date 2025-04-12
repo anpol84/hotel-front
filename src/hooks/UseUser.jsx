@@ -12,12 +12,14 @@ const useUser = id => {
 		const tokenCookie = document.cookie
 			.split('; ')
 			.find(row => row.startsWith('token='))
+		console.log(tokenCookie)
 
 		if (tokenCookie) {
 			const tokenValue = tokenCookie.split('=')[1]
 			setToken(tokenValue)
 			getUser({ token: tokenValue, id: id })
 				.then(response => {
+					console.log(response.data)
 					setUser(response.data)
 				})
 				.catch(err => {

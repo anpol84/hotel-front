@@ -14,17 +14,17 @@ const Logout = ({ id }) => {
 		<>
 			<li>
 				<Link className='dropdown-item' to={`/users/${id}`}>
-					Profile
+					Профиль
 				</Link>
 				<Link className='dropdown-item' to={`/users/${id}/favourite`}>
-					Favourite hotels
+					Избранное
 				</Link>
 			</li>
 			<li>
 				<hr className='dropdown-divider' />
 			</li>
 			<button className='dropdown-item' onClick={handleLogout}>
-				Logout
+				Выйти
 			</button>
 		</>
 	)

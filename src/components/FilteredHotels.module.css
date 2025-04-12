@@ -1,0 +1,184 @@
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	width: 1200px;
+	margin-bottom: 2%;
+	margin-top: 1%;
+	.searchInput {
+		width: 388px;
+		height: 53px;
+
+		background: #ffffff;
+		border-radius: 12.8439px;
+		border: none;
+
+		filter: drop-shadow(0px 0px 5.3px rgba(0, 0, 0, 0.25));
+		padding: 2%;
+
+		font-family: var(--second-family);
+		font-style: normal;
+		font-weight: 400;
+		font-size: 21px;
+		line-height: 25px;
+		color: #838383;
+	}
+	.headerFilter {
+		display: flex;
+
+		.starsSelector {
+			box-sizing: border-box;
+
+			width: 241px;
+			height: 53px;
+			margin-right: 15px;
+
+			background: #ffffff;
+			border: 1px solid #cacaca;
+			border-radius: 26px;
+
+			font-family: var(--second-family);
+			font-style: normal;
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 24px;
+
+			color: #5c5c5c;
+			padding: 2%;
+		}
+		.rateSelector {
+			box-sizing: border-box;
+			width: 388px;
+			height: 53px;
+			background: #ffffff;
+			border: 1px solid #cacaca;
+			border-radius: 26px;
+
+			font-family: var(--second-family);
+			font-style: normal;
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 24px;
+
+			color: #5c5c5c;
+			padding: 2%;
+		}
+	}
+}
+.filters {
+	display: flex;
+
+	width: 1200px;
+	height: 280px;
+	margin: 0 auto;
+	justify-content: space-between;
+	.filter {
+		border-right: 2px solid #cacaca;
+		padding-right: 15px;
+		margin-bottom: 10px;
+		.filterHeader {
+			font-family: var(--second-family);
+			font-style: normal;
+			font-weight: 600;
+			font-size: 22px;
+			line-height: 26px;
+			margin-bottom: 2%;
+
+			color: #000000;
+		}
+		.input {
+			margin: 0;
+		}
+		.label {
+			margin: 0;
+			margin-top: 1%;
+			margin-left: 2%;
+			font-family: var(--second-family);
+		}
+	}
+}
+
+.notFoundMessage {
+	font-family: var(--second-family);
+	font-weight: 500;
+	font-size: 1.2rem;
+	color: #000;
+	text-align: center;
+}
+.hotels {
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	width: 86.8%;
+	height: 100%;
+	margin: 0 auto;
+	margin-bottom: 3%;
+	margin-top: 1%;
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 2%;
+		margin-left: 1%;
+	}
+}
+
+.success {
+	padding: 0.8%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #6be637;
+	background: #fff;
+
+	.successText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #6be637;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 8%;
+		margin-left: 4%;
+	}
+}

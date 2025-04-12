@@ -1,7 +1,23 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import { ViteMinifyPlugin } from 'vite-plugin-minify'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+	plugins: [react(), ViteMinifyPlugin()],
+	define: {
+		'process.env.VITE_API_PATH': JSON.stringify(process.env.VITE_API_PATH),
+	},
+	server: {
+		watch: {
+			usePolling: true,
+		},
+		host: true,
+		strictPort: true,
+		port: 80,
+	},
+	preview: {
+		host: true,
+		strictPort: true,
+		port: 80,
+	},
 })

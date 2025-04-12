@@ -1,0 +1,161 @@
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	width: 46%;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	margin-left: 44.8%;
+	.editButton {
+		border-radius: 13px;
+		padding: 5px 22px;
+		width: 333px;
+		height: 50px;
+		background: #000;
+		font-family: var(--second-family);
+		font-weight: 700;
+		font-size: 16px;
+		text-transform: uppercase;
+		color: #f6f6f6;
+		border: none;
+	}
+	.deleteButton {
+		border-radius: 13px;
+		padding: 5px 22px;
+		width: 333px;
+		height: 50px;
+		background: #f25454;
+		font-family: var(--second-family);
+		font-weight: 700;
+		font-size: 16px;
+		text-transform: uppercase;
+		color: #f6f6f6;
+		border: none;
+	}
+}
+
+.card {
+	box-shadow: 0 4px 8px -3px rgba(0, 0, 0, 0.25),
+		0 -2px 9px 0 rgba(0, 0, 0, 0.04);
+	background: #fff;
+	border-radius: 23px;
+	width: 1205px;
+	height: 570px;
+
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	margin-top: 1.7%;
+
+	.content {
+		width: 529px;
+		height: 473px;
+		margin-right: 11%;
+		margin-top: 3.2%;
+		.hotelName {
+			font-family: var(--second-family);
+			font-weight: 600;
+			font-size: 28px;
+			color: #000;
+		}
+		.header {
+			font-family: var(--second-family);
+			font-weight: 600;
+			font-size: 21px;
+			color: #000;
+		}
+		.text {
+			font-family: var(--second-family);
+			font-weight: 400;
+			font-size: 21px;
+			color: #000;
+		}
+	}
+}
+
+.feedbackHead {
+	display: flex;
+	justify-content: space-between;
+	.feedbackHeader {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.8rem;
+		color: #000;
+		margin-left: 9%;
+		margin-top: 2%;
+	}
+
+	.addFeedback {
+		margin-right: 9%;
+		width: 234px;
+		height: 41px;
+		margin-top: 2%;
+
+		background: #000000;
+		border-radius: 10px;
+
+		font-family: var(--second-family);
+
+		font-weight: 700;
+		font-size: 15px;
+		line-height: 19px;
+
+		text-transform: uppercase;
+
+		color: #f6f6f6;
+	}
+}
+
+.zeroFeedback {
+	font-family: var(--second-family);
+
+	font-weight: 700;
+	font-size: 18px;
+
+	margin-top: 0;
+	margin-bottom: 0;
+	text-align: center;
+}
+.cards {
+	margin: 0 auto;
+	margin-left: 9%;
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 2%;
+		margin-left: 1%;
+	}
+}

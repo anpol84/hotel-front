@@ -1,0 +1,114 @@
+@import url('../fonts/tt-travels/stylesheet.css');
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+
+.card {
+	box-shadow: -2px 2px 8px 1px rgba(0, 0, 0, 0.16);
+	border-radius: 28px;
+	width: 30%;
+	background: #fff;
+	display: flex;
+	justify-content: space-between;
+	margin: 0;
+	margin-top: 1.7%;
+	margin-right: 0.8%;
+	margin-left: 0.8%;
+
+	position: relative;
+	.cardImage {
+		background-size: 'cover';
+		background-position: 'center';
+		width: '42%';
+		height: '100%';
+	}
+
+	.cardContent {
+		width: 50%;
+		.hotelName {
+			font-family: var(--second-family);
+			font-weight: 500;
+			font-size: 1.2rem;
+			color: #000;
+			margin: 0;
+			margin-top: 8.5%;
+		}
+		.hotelCity {
+			font-family: var(--second-family);
+			font-weight: 500;
+			font-size: 1rem;
+			color: #000;
+			margin: 0;
+		}
+		.hotelPrice {
+			font-family: var(--second-family);
+			font-weight: 600;
+			font-size: 1.1rem;
+			color: #000;
+			margin: 0;
+			margin-top: 20%;
+		}
+		.cardButton {
+			border-radius: 10px;
+			width: 70%;
+			height: 15%;
+			background: #000;
+			border: none;
+			.buttonText {
+				font-family: var(--second-family);
+				font-weight: 700;
+				font-size: 0.62rem;
+				text-transform: uppercase;
+				color: #f6f6f6;
+				text-align: center;
+				line-height: 1.7rem;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 900px) {
+	.card {
+		width: 40%;
+	}
+}
+
+@media only screen and (max-width: 650px) {
+	.card {
+		margin-top: 5%;
+		width: 80%;
+	}
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 2%;
+		margin-left: 1%;
+	}
+}

@@ -1,0 +1,150 @@
+.root {
+	background: #eef6ff;
+	min-height: 100vh;
+	.header {
+		background: #c0dcff;
+		padding-top: 2%;
+		padding-bottom: 2%;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		.searchHeader {
+			margin-left: 6%;
+			display: flex;
+
+			.search {
+				font-family: var(--second-family);
+				font-weight: 500;
+				font-size: 1.1rem;
+				color: #5c5c5c;
+				background: #fff;
+				border: none;
+				margin-top: 1.5%;
+				margin-left: 10%;
+				border-radius: 6px;
+				width: 388px;
+				height: 53px;
+				padding: 2%;
+			}
+		}
+		.addHotel {
+			margin-right: 9%;
+			border: none;
+			border-radius: 22px;
+			padding: 6px 24px;
+			width: 337px;
+			height: 53px;
+			background: #ff780a;
+			.addHotelText {
+				font-family: var(--second-family);
+				font-weight: 700;
+				font-size: 20px;
+				text-transform: uppercase;
+				color: #f6f6f6;
+				text-decoration: none;
+				text-decoration-skip-ink: none;
+			}
+		}
+	}
+
+	.headerText {
+		font-family: var(--second-family);
+		font-weight: 500;
+		font-size: 1.2rem;
+		color: #000;
+		text-align: center;
+	}
+
+	.hotels {
+		display: flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		width: 86.8%;
+		height: 100%;
+		margin: 0 auto;
+		margin-bottom: 1.5%;
+	}
+}
+
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+
+@media only screen and (max-width: 900px) {
+	.root {
+		.hotels {
+			justify-content: center;
+		}
+	}
+}
+
+@media only screen and (max-width: 650px) {
+	.root {
+		.hotels {
+			justify-content: center;
+		}
+	}
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 2%;
+		margin-left: 1%;
+	}
+}
+
+.success {
+	padding: 0.8%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #6be637;
+	background: #fff;
+
+	.successText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #6be637;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 8%;
+		margin-left: 4%;
+	}
+}

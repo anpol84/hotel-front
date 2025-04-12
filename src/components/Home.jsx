@@ -1,7 +1,6 @@
 import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
 import { validateToken } from '../api'
-import HotelCarousel from './HotelCarousel'
 import HotelSearch from './HotelSearch'
 import Navbar from './Navbar'
 
@@ -42,10 +41,9 @@ const Home = () => {
 
 	return (
 		<section>
-			<section className='container'>
+			<section>
 				<Navbar userRole={user.role} id={user.id} />
 				<HotelSearch />
-				<HotelCarousel />
 			</section>
 		</section>
 	)

@@ -1,0 +1,137 @@
+@import url('../fonts/tt-travels/stylesheet.css');
+
+.root {
+	margin: 0 auto;
+	.header {
+		margin: 0 auto;
+		margin-top: 4%;
+		display: flex;
+		justify-content: space-between;
+		width: 40%;
+		.headerTable {
+			font-family: var(--second-family);
+			font-weight: 600;
+			font-size: 1.3rem;
+			color: #000;
+		}
+		.search {
+			border-radius: 8px;
+			width: 33%;
+			height: 15%;
+			font-family: var(--second-family);
+			font-weight: 400;
+			font-size: 1rem;
+			color: #838383;
+			border: 1px solid #ccc;
+			box-shadow: -2px 2px 8px 1px rgba(0, 0, 0, 0.16);
+			padding: 1%;
+		}
+	}
+	.table {
+		margin: 0 auto;
+		width: 40%;
+		font-family: var(--second-family);
+		border: 1px solid #ccc;
+		margin-bottom: 2%;
+
+		.tableHeader {
+			background: #f6f6f6;
+			tr {
+				height: 40px;
+			}
+		}
+		.tbody {
+			tr {
+				border: 1px solid #b2b2b2;
+				height: 40px;
+			}
+			.icons {
+				display: flex;
+				justify-content: end;
+			}
+		}
+	}
+}
+.error {
+	padding: 1%;
+
+	display: flex;
+	justify-content: space-between;
+	position: absolute;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+	width: 30%;
+	height: 10%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+	.errorIcon {
+		margin: auto auto;
+	}
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1rem;
+		color: #ff780a;
+		margin: auto auto;
+	}
+}
+
+.error {
+	padding: 1%;
+	padding-right: 2%;
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #f9801e;
+	background: #fff;
+
+	.errorText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #ff780a;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 2%;
+		margin-left: 1%;
+	}
+}
+
+.success {
+	padding: 0.8%;
+	padding-right: 2%;
+
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	left: 3%;
+	bottom: 3%;
+	border-radius: 25px;
+
+	height: 11%;
+	box-shadow: 0 0 9px -2px #6be637;
+	background: #fff;
+
+	.successText {
+		font-family: var(--second-family);
+		font-weight: 600;
+		font-size: 1.2rem;
+		color: #6be637;
+		margin: auto auto;
+		margin-left: 5%;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+		margin-top: 4%;
+		margin-left: 2%;
+	}
+}

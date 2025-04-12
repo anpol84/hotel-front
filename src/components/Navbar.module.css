@@ -1,0 +1,12 @@
+@import url('../fonts/tt-travels/stylesheet.css');
+@import url('../fonts/GetVoIP/stylesheet.css');
+
+:root {
+	--font-family: 'Inter', sans-serif;
+	--second-family: 'TT Travels', sans-serif;
+	--third-family: 'GetVoIP Grotesque', sans-serif;
+	--font3: 'NokiaKokia(RUS BY LYAJKA)', sans-serif;
+}
+* {
+	font-family: var(--second-family);
+}

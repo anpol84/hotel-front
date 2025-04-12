@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode'
 import { React, useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
 	addFavouriteHotel,
 	deleteFavouriteHotel,
@@ -10,6 +10,9 @@ import {
 	getHotelFeedbacks,
 	validateAdmin,
 } from '../api.js'
+import FeedbackCard from './FeedbackCard.jsx'
+import styles from './Hotel.module.css'
+import Navbar from './Navbar'
 
 const Hotel = () => {
 	const { id } = useParams()
@@ -21,6 +24,52 @@ const Hotel = () => {
 	const [isAdmin, setIsAdmin] = useState(false)
 	const [user, setUser] = useState(null)
 	const [haveFeedback, setHaveFeedback] = useState(false)
+
+	const positionDict = {
+		CENTER: 'В центре',
+		PARK: 'Рядом с парком',
+		SEA: 'Рядом с море',
+		AIRPORT: 'Рядом с аэропортом',
+		RAILWAY: 'Рядом с вокзалом',
+	}
+
+	const additionDict = {
+		WIFI: 'Wi-Fi',
+		PARKING: 'Парковка',
+		RESTAURANT: 'Ресторан',
+		BEACH: 'Пляж',
+		POOL: 'Бассейн',
+		AQUA_PARK: 'Аквапарк',
+		SAUNA: 'Сауна',
+		FITNESS: 'Тренажерный зал',
+	}
+
+	const roomPeopleDict = {
+		SINGLE: 'На одного',
+		DOUBLE: 'На двоих с 2 кроватями',
+		TWIN: 'На двоих с 1 кроватью',
+		DBL_EXB: 'На двоих с ребенком',
+		TRIPLE: 'На троих',
+	}
+
+	const roomViewsDict = {
+		SEA_VIEW: 'На море',
+		CITY_VIEW: 'На город',
+		GARDEN_VIEW: 'На природу',
+		POOL_VIEW: 'На бассейн',
+	}
+
+	const roomTypesDict = {
+		STANDARD: 'Стандартный',
+		SUPERIOR: 'Стандартный+',
+		STUDIO: 'Студия',
+		FAMILY_ROOM: 'С кухней',
+		FAMILY_STUDIO: 'Студия с кухней',
+		DELUX: 'Делюкс',
+		SUITE: 'Премиум',
+		PRESIDENTIAL_SUITE: 'Президентский',
+		HONEYMOON_SUITE: 'Для молодоженов',
+	}
 
 	useEffect(() => {
 		const tokenCookie = document.cookie
@@ -143,453 +192,236 @@ const Hotel = () => {
 		e.preventDefault()
 		navigate(`/feedback/${feedbackId}`, { state: { id: id } })
 	}
+	const renderStars = () => {
+		const rate = Math.floor(hotel.stars)
+		const stars = []
+
+		for (let i = 0; i < rate; i++) {
+			stars.push(
+				<svg
+					key={i}
+					width='40'
+					height='36'
+					viewBox='0 0 20 18'
+					fill='none'
+					xmlns='http://www.w3.org/2000/svg'
+				>
+					<path
+						d='M10.3796 -3.05176e-05L12.6464 6.67308H19.9818L14.0473 10.7973L16.3141 17.4704L10.3796 13.3462L4.44509 17.4704L6.71187 10.7973L0.777356 6.67308H8.11281L10.3796 -3.05176e-05Z'
+						fill='white'
+					/>
+				</svg>
+			)
+		}
+
+		return <div style={{ marginTop: '72%', marginLeft: '5%' }}>{stars}</div>
+	}
 
 	return (
-		<div className='container'>
-			{errorMessage && <p className='text-danger'>{errorMessage}</p>}
+		<div>
+			{user && <Navbar userRole={user.role} id={user.id} />}
+			{errorMessage && (
+				<div className={styles.error}>
+					<svg
+						width='65'
+						height='65'
+						viewBox='0 0 65 65'
+						fill='none'
+						xmlns='http://www.w3.org/2000/svg'
+					>
+						<path
+							d='M29.9019 4.5C31.0566 2.5 33.9434 2.5 35.0981 4.5L58.0477 44.25C59.2024 46.25 57.7591 48.75 55.4497 48.75H9.55033C7.24093 48.75 5.79755 46.25 6.95225 44.25L29.9019 4.5Z'
+							fill='#FF780A'
+						/>
+						<path
+							d='M29.9648 34.4106L29.1431 23.228V18.8936H35.7495V23.228L34.8794 34.4106H29.9648ZM29.9326 41.4521C29.2988 40.8721 28.9819 40.061 28.9819 39.019C28.9819 37.9878 29.2988 37.1821 29.9326 36.6021C30.5557 36.022 31.3936 35.7319 32.4463 35.7319C33.499 35.7319 34.3423 36.022 34.9761 36.6021C35.5991 37.1821 35.9106 37.9878 35.9106 39.019C35.9106 40.061 35.5991 40.8721 34.9761 41.4521C34.3423 42.0322 33.499 42.3223 32.4463 42.3223C31.3936 42.3223 30.5557 42.0322 29.9326 41.4521Z'
+							fill='white'
+						/>
+					</svg>
+
+					<p className={styles.errorText}>{errorMessage}</p>
+				</div>
+			)}
+			{isAdmin && (
+				<div className={styles.buttons}>
+					<button className={styles.editButton} onClick={handleEdit}>
+						Редактировать карточку
+					</button>
+					<button
+						className={styles.deleteButton}
+						onClick={handleDelete}
+					>
+						Удалить карточку
+					</button>
+				</div>
+			)}
 			{hotel ? (
 				<div
-					className='card p-5 mt-5'
-					style={{ backgroundColor: 'whitesmoke' }}
+					style={{
+						display: 'block',
+						margin: '0 auto',
+						width: '100%',
+					}}
 				>
-					<h4 className='card-title text-center'>
-						Hotel Information
-					</h4>
-					<div className='card-body'>
-						<div className='col-md-10 mx-auto'>
-							<div className='card mb-3 shadow'>
-								<div className='col-md-12'>
-									<div className='d-flex justify-content-center align-items-center mb-4 mt-4'>
-										<div style={{ position: 'relative' }}>
-											<img
-												src={`${hotel.imageUrl}`}
-												alt='Hotel'
-												style={{
-													width: '300px',
-													height: '300px',
-													objectFit: 'cover',
-												}}
-											/>
-											<div
-												style={{
-													position: 'absolute',
-													top: '10px',
-													right: '10px',
-													cursor: 'pointer',
-												}}
-											>
-												<img
-													src={
-														hotel.isFavourite
-															? '/img/heart-liked.svg'
-															: '/img/heart-unliked.svg'
-													}
-													onClick={handleFavourite}
-													alt='Unliked'
-												/>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div className='row g-0'>
-									<div className='col-md-10'>
-										<div className='card-body'>
-											<div className='form-group row'>
-												<label className='col-md-2 col-form-label fw-bold'>
-													Name:
-												</label>
-												<div className='col-md-10'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.name}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													City:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.city}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Stars:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.stars}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Minimal price for the room:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.minPrice}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Maximum price for the room:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.maxPrice}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Avg Rate:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.avgRate}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Additions:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.additions}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Positions:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-														}}
-													>
-														{hotel.positions}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Rooms for views:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-															flexDirection:
-																'column',
-														}}
-													>
-														{hotel.roomViews.map(
-															(room, index) => (
-																<span
-																	key={index}
-																>
-																	{room.type}{' '}
-																	:{' '}
-																	{room.price}{' '}
-																	руб.
-																</span>
-															)
-														)}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Room for types:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-															flexDirection:
-																'column',
-														}}
-													>
-														{hotel.roomTypes.map(
-															(room, index) => (
-																<span
-																	key={index}
-																>
-																	{room.type}{' '}
-																	:{' '}
-																	{room.price}{' '}
-																	руб.
-																</span>
-															)
-														)}
-													</p>
-												</div>
-											</div>
-											<hr />
-											<div className='form-group row'>
-												<label className='col-md-4 col-form-label fw-bold'>
-													Room for peoples:
-												</label>
-												<div className='col-md-6'>
-													<p
-														className='card-text'
-														style={{
-															display: 'flex',
-															alignItems:
-																'center',
-															justifyContent:
-																'center',
-															height: '100%',
-															flexDirection:
-																'column',
-														}}
-													>
-														{hotel.roomPeople.map(
-															(room, index) => (
-																<span
-																	key={index}
-																>
-																	{room.type}{' '}
-																	:{' '}
-																	{room.price}{' '}
-																	руб.
-																</span>
-															)
-														)}
-													</p>
-												</div>
-											</div>
-											<hr />
-										</div>
-									</div>
-								</div>
+					<div className={styles.card}>
+						<div
+							style={{
+								backgroundImage: `url(${hotel.imageUrl})`,
+								backgroundSize: 'cover',
+								backgroundPosition: 'center',
+								width: '474px',
+								height: '474px',
+								borderRadius: '19px',
+								marginLeft: '4%',
+								marginTop: '4%',
+							}}
+							className={styles.cardImage}
+						>
+							<img
+								src={
+									hotel.isFavourite
+										? '/img/heart-liked.svg'
+										: '/img/heart-unliked.svg'
+								}
+								style={{
+									marginLeft: '82%',
+									marginTop: '4%',
+									width: '69px',
+									height: '61px',
+									cursor: 'pointer',
+								}}
+								onClick={handleFavourite}
+								alt='Unliked'
+							/>
+							{renderStars()}
+						</div>
+						<div className={styles.content}>
+							<p className={styles.hotelName}>{hotel.name}</p>
+							<div>
+								<span className={styles.header}>Город: </span>
+								<span className={styles.text}>
+									{hotel.city}
+								</span>
 							</div>
-
-							<div className='d-flex justify-content-center'>
-								<div className='mx-2'>
-									<Link
-										to={`/`}
-										className='btn btn-outline-info btn'
-									>
-										На главную
-									</Link>
-								</div>
-								{isAdmin && (
-									<>
-										<div className='mx-2'>
-											<button
-												className='btn btn-danger btn'
-												onClick={handleDelete}
-											>
-												Close hotel
-											</button>
-										</div>
-										<div className='mx-2'>
-											<button
-												className='btn btn-warning btn'
-												onClick={handleEdit}
-											>
-												Edit hotel
-											</button>
-										</div>
-									</>
-								)}
+							<div>
+								<span className={styles.header}>
+									Минимальная стоимость комнаты:{' '}
+								</span>
+								<span className={styles.text}>
+									{hotel.minPrice} руб.
+								</span>
+							</div>
+							<div>
+								<span className={styles.header}>
+									Расположение:{' '}
+								</span>
+								<span className={styles.text}>
+									{hotel.positions
+										.map(pos => positionDict[pos])
+										.join(', ')}
+								</span>
+							</div>
+							<div>
+								<span className={styles.header}>
+									Дополнения:{' '}
+								</span>
+								<span className={styles.text}>
+									{hotel.additions
+										.map(add => additionDict[add])
+										.join(', ')}
+								</span>
+							</div>
+							<div>
+								<span className={styles.header}>
+									Комнаты с красивыми видами:{' '}
+								</span>
+								{hotel.roomViews.map(view => (
+									<div>
+										<span className={styles.text}>
+											{roomViewsDict[view.type]}{' '}
+											{view.price} руб.
+										</span>
+									</div>
+								))}
+							</div>
+							<div>
+								<span className={styles.header}>
+									Типы комнат:{' '}
+								</span>
+								{hotel.roomTypes.map(type => (
+									<div>
+										<span className={styles.text}>
+											{roomTypesDict[type.type]}{' '}
+											{type.price} руб.
+										</span>
+									</div>
+								))}
+							</div>
+							<div>
+								<span className={styles.header}>
+									Комната для n людей:{' '}
+								</span>
+								{hotel.roomPeople.map(type => (
+									<div>
+										<span className={styles.text}>
+											{roomPeopleDict[type.type]}{' '}
+											{type.price} руб.
+										</span>
+									</div>
+								))}
 							</div>
 						</div>
 					</div>
-					<div
-						className='mt-4'
-						style={{
-							border: '1px solid #ccc',
-							padding: '15px',
-							margin: '10px',
-							borderRadius: '5px',
-						}}
-					>
-						<h5>Отзывы на отель</h5>
-						{!haveFeedback && (
-							<button
-								className='btn btn-info btn mb-2'
-								onClick={handleCreateFeedback}
-							>
-								Добавить отзыв
-							</button>
-						)}
-						{feedbacks && feedbacks.length > 0 ? (
-							feedbacks.map((feedback, index) => (
-								<div
-									key={index}
-									className='review-card mb-3 p-3 border rounded'
+					<div>
+						<div className={styles.feedbackHead}>
+							<p className={styles.feedbackHeader}>Отзывы</p>
+							{!haveFeedback && (
+								<button
+									className={styles.addFeedback}
+									onClick={handleCreateFeedback}
 								>
-									<div
-										style={{
-											display: 'flex',
-											justifyContent: 'space-between',
-										}}
-									>
-										<div>{feedback.userLogin}</div>
-										<div>{feedback.createdAt}</div>
-									</div>
-									<div style={{ marginTop: '10px' }}>
-										{feedback.body}
-									</div>
-									<div
-										style={{
-											marginTop: '10px',
-											fontWeight: 'bold',
-										}}
-									>
-										Оценка: {feedback.mark}/5
-									</div>
-									{(isAdmin ||
-										user.login === feedback.userLogin) && (
-										<div
-											style={{
-												display: 'flex',
-												justifyContent: 'center',
-												marginTop: '10px',
-											}}
-										>
-											<button
-												className='btn btn-danger btn-sm'
-												onClick={e => {
-													e.preventDefault()
-													handleDeleteFeedback(
-														e,
-														feedback.id,
-														feedback.userLogin
-													)
-												}}
-											>
-												Удалить отзыв
-											</button>
-											<button
-												className='btn btn-warning btn-sm'
-												onClick={e =>
-													handleEditFeedback(
-														e,
-														feedback.id
-													)
-												}
-												style={{ marginLeft: '10px' }}
-											>
-												Редактировать отзыв
-											</button>
-										</div>
-									)}
+									Добавить отзыв
+								</button>
+							)}
+						</div>
+						<div className={styles.cards}>
+							{feedbacks && feedbacks.length > 0 ? (
+								feedbacks.map((feedback, index) => (
+									<FeedbackCard
+										key={index}
+										feedback={feedback}
+										user={user}
+										isAdmin={isAdmin}
+										handleDeleteFeedback={
+											handleDeleteFeedback
+										}
+										handleEditFeedback={handleEditFeedback}
+									/>
+								))
+							) : (
+								<div
+									style={{
+										marginLeft: '25%',
+										marginTop: '-4%',
+									}}
+								>
+									<p className={styles.zeroFeedback}>
+										Никто еще не написал отзыв на этот
+										отель.
+									</p>
+									<p className={styles.zeroFeedback}>
+										Будьте первым, кто займется этим
+										прекрасным делом!
+									</p>
 								</div>
-							))
-						) : (
-							<p>Нет отзывов на этот отель.</p>
-						)}
+							)}
+						</div>
+						<br />
+						<br />
 					</div>
 				</div>
 			) : (
-				<p>Loading user data...</p>
+				<p>Загрузка</p>
 			)}
 		</div>
 	)
