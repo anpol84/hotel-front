@@ -66,7 +66,6 @@ const EditFeedback = () => {
 	}
 
 	const renderStars = (val = mark) => {
-		console.log(mark)
 		const stars = []
 
 		for (let i = 0; i < val; i++) {
@@ -133,7 +132,7 @@ const EditFeedback = () => {
 		e.preventDefault()
 		editHotelFeedback(id, feedback, token)
 			.then(() => {
-				setSuccessMessage('Feedback updated success!')
+				setSuccessMessage('Отзыв успешно обновлен!')
 				setErrorMessage('')
 				setFeedback({
 					body: '',

@@ -115,7 +115,6 @@
 .zeroFeedback {
 	font-family: var(--second-family);
 
-	font-weight: 700;
 	font-size: 18px;
 
 	margin-top: 0;
@@ -158,4 +157,16 @@
 		margin-top: 2%;
 		margin-left: 1%;
 	}
+}
+
+.modalOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

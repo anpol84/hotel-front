@@ -201,7 +201,7 @@ const EditHotel = () => {
 		}
 		editHotel(newHotel, id, token)
 			.then(() => {
-				setSuccessMessage('Hotel updated!')
+				setSuccessMessage('Отель успешно обновлен')
 				setErrorMessage('')
 			})
 			.catch(error => {

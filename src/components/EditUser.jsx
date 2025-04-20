@@ -43,7 +43,7 @@ const EditUser = () => {
 					.find(row => row.startsWith('token='))
 					.split('=')[1]
 				const decodedToken = jwtDecode(token)
-				setSuccessMessage('User updated successfully')
+				setSuccessMessage('Пользователь успешно обновлен')
 				setTimeout(() => {
 					if (decodedToken.user_id != id) {
 						navigate('/users')

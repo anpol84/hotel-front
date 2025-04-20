@@ -43,7 +43,7 @@ const HotelCard = ({ hotel, isAdmin, token, onDelete, onChangeFavourite }) => {
 			)
 		}
 
-		return <div style={{ marginTop: '49%', marginLeft: '5%' }}>{stars}</div>
+		return <div style={{ marginTop: '58%', marginLeft: '5%' }}>{stars}</div>
 	}
 
 	const handleEdit = e => {
@@ -110,7 +110,7 @@ const HotelCard = ({ hotel, isAdmin, token, onDelete, onChangeFavourite }) => {
 					fill='none'
 					xmlns='http://www.w3.org/2000/svg'
 					style={{
-						marginLeft: '81%',
+						marginLeft: '85%',
 						marginTop: '-4%',
 						position: 'absolute',
 						cursor: 'pointer',
@@ -137,7 +137,7 @@ const HotelCard = ({ hotel, isAdmin, token, onDelete, onChangeFavourite }) => {
 					fill='none'
 					xmlns='http://www.w3.org/2000/svg'
 					style={{
-						marginLeft: '92%',
+						marginLeft: '94%',
 						marginTop: '-4%',
 						position: 'absolute',
 						cursor: 'pointer',
@@ -161,8 +161,11 @@ const HotelCard = ({ hotel, isAdmin, token, onDelete, onChangeFavourite }) => {
 			)}
 
 			<div className={styles.cardContent}>
-				<p className={styles.hotelName}>{hotel.name}</p>
-				<p className={styles.hotelCity}>{hotel.city}</p>
+				<div className={styles.headerCardContent}>
+					<p className={styles.hotelName}>{hotel.name}</p>
+					<p className={styles.hotelCity}>{hotel.city}</p>
+				</div>
+
 				<p className={styles.hotelPrice}>От {hotel.minPrice} руб</p>
 				<Link to={`/hotels/${hotel.id}`}>
 					<button className={styles.cardButton}>

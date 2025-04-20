@@ -11,6 +11,7 @@ import {
 	validateAdmin,
 } from '../api.js'
 import FeedbackCard from './FeedbackCard.jsx'
+import FeedbackModal from './FeedbackModal.jsx'
 import styles from './Hotel.module.css'
 import Navbar from './Navbar'
 
@@ -24,6 +25,18 @@ const Hotel = () => {
 	const [isAdmin, setIsAdmin] = useState(false)
 	const [user, setUser] = useState(null)
 	const [haveFeedback, setHaveFeedback] = useState(false)
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [currentFeedback, setCurrentFeedback] = useState(null)
+
+	const handleModalClick = feedback => {
+		setCurrentFeedback(feedback)
+		setIsModalOpen(true)
+	}
+
+	const closeModal = () => {
+		setIsModalOpen(false)
+		setCurrentFeedback(null)
+	}
 
 	const positionDict = {
 		CENTER: 'В центре',
@@ -370,6 +383,12 @@ const Hotel = () => {
 									</div>
 								))}
 							</div>
+							<span className={styles.header}>
+								Средний рейтинг:{' '}
+							</span>
+							<span className={styles.text}>
+								{hotel.avgRate} / 5
+							</span>
 						</div>
 					</div>
 					<div>
@@ -396,6 +415,7 @@ const Hotel = () => {
 											handleDeleteFeedback
 										}
 										handleEditFeedback={handleEditFeedback}
+										handleModalClick={handleModalClick}
 									/>
 								))
 							) : (
@@ -419,6 +439,18 @@ const Hotel = () => {
 						<br />
 						<br />
 					</div>
+					{isModalOpen && (
+						<div
+							className={styles.modalOverlay}
+							onClick={closeModal}
+						>
+							<FeedbackModal
+								feedback={currentFeedback}
+								closeModal={closeModal}
+								onClick={e => e.stopPropagation()}
+							/>
+						</div>
+					)}
 				</div>
 			) : (
 				<p>Загрузка</p>

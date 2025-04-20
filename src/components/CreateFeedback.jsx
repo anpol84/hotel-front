@@ -58,7 +58,6 @@ const CreateFeedback = () => {
 
 	const renderStars = () => {
 		const stars = []
-		console.log(mark)
 
 		for (let i = 0; i < mark; i++) {
 			stars.push(
@@ -127,7 +126,7 @@ const CreateFeedback = () => {
 
 		createFeedback(feedbackToSend, token)
 			.then(() => {
-				setSuccessMessage('Отзыв создан!')
+				setSuccessMessage('Отзыв успешно создан')
 				setErrorMessage('')
 				setFeedback({
 					body: '',

@@ -1,18 +1,24 @@
-FROM node:current-slim
+FROM node:current-slim as builder
 
 WORKDIR /client
 
-COPY /src /client/src
-COPY index.html /client/
-COPY package*.json /client/
-COPY vite.config.js /client/
-COPY /public /client/public
+COPY /src /src
+COPY index.html /
+COPY package*.json /
+COPY vite.config.js /
+COPY /public /public
 COPY eslint.config.js /client
 
-RUN npm i && npm cache clean --force \
-	&& npm i @esbuild/linux-x64 esbuild-linux-64 \
-	&& npm run build
+RUN npm ci && npm run build
 
+FROM node:current-slim
+
+COPY --from=builder /dist ./dist
+RUN npm install -g serve
+
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+ENV PORT=80
 EXPOSE 80
-
-CMD ["npm", "run", "preview"]
+CMD ["/start.sh"]

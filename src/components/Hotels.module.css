@@ -59,9 +59,9 @@
 		display: flex;
 		justify-content: flex-start;
 		flex-wrap: wrap;
-		width: 86.8%;
+		width: 95%;
 		height: 100%;
-		margin: 0 auto;
+		margin: 0 4%;
 		margin-bottom: 1.5%;
 	}
 }
@@ -147,4 +147,14 @@
 		margin-top: 8%;
 		margin-left: 4%;
 	}
+}
+
+.hotelsNotExists {
+	text-align: center;
+	font-family: var(--second-family);
+	font-weight: 400;
+	font-size: 1.3rem;
+	color: #000;
+	margin: auto auto;
+	display: block;
 }

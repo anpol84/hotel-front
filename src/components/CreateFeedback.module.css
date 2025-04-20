@@ -19,7 +19,7 @@
 	}
 	.feedbackForm {
 		height: 459px;
-		width: 913px;
+		width: 885px;
 		margin: 0 auto;
 		background: #c0dcff;
 		border-radius: 23px;
@@ -94,7 +94,6 @@
 				color: #f6f6f6;
 				border: none;
 				margin-top: 65px;
-				margin-right: 24px;
 			}
 		}
 	}
@@ -154,7 +153,7 @@
 		white-space: nowrap;
 		padding: 0;
 		margin: 0;
-		margin-top: 8%;
+		margin-top: 5%;
 		margin-left: 4%;
 	}
 }

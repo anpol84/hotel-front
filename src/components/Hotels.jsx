@@ -87,6 +87,14 @@ const Hotels = () => {
 	const totalPages = Math.ceil(filteredData.length / hotelsPerPage)
 
 	const renderHotels = () => {
+		if (filteredData.length == 0) {
+			return (
+				<p className={styles.hotelsNotExists}>
+					Подходящего отеля не существует, но вы можете выбрать любой
+					другой!
+				</p>
+			)
+		}
 		const startIndex = (currentPage - 1) * hotelsPerPage
 		const endIndex = startIndex + hotelsPerPage
 		return filteredData

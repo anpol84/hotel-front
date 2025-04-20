@@ -7,6 +7,7 @@ const FeedbackCard = ({
 	isAdmin,
 	handleDeleteFeedback,
 	handleEditFeedback,
+	handleModalClick,
 }) => {
 	const renderStars = () => {
 		const stars = []
@@ -32,7 +33,7 @@ const FeedbackCard = ({
 		}
 		while (stars.length != 5) {
 			stars.push(
-				user.login === feedback.userLogin ? (
+				user && user.login === feedback.userLogin ? (
 					<svg
 						width='21'
 						height='19'
@@ -71,7 +72,7 @@ const FeedbackCard = ({
 		<div
 			className={styles.card}
 			style={
-				user.login === feedback.userLogin
+				user && user.login === feedback.userLogin
 					? { background: '#C0DCFF' }
 					: {}
 			}
@@ -89,7 +90,7 @@ const FeedbackCard = ({
 						cy='22.8711'
 						r='22.1656'
 						fill={
-							user.login === feedback.userLogin
+							user && user.login === feedback.userLogin
 								? '#F2F8FF'
 								: '#C0DCFF'
 						}
@@ -101,9 +102,16 @@ const FeedbackCard = ({
 				</div>
 			</div>
 
-			<div className={styles.feedbackBody}>{feedback.body}</div>
+			<div
+				className={styles.feedbackBody}
+				onClick={() => handleModalClick(feedback)}
+			>
+				{feedback.body.length > 110
+					? feedback.body.substring(0, 110) + '...'
+					: feedback.body}
+			</div>
 			<div className={styles.cardFooter}>
-				{(isAdmin || user.login === feedback.userLogin) && (
+				{(isAdmin || (user && user.login === feedback.userLogin)) && (
 					<div className={styles.feedbackButtons}>
 						<button
 							className={styles.editFeedback}
@@ -130,7 +138,7 @@ const FeedbackCard = ({
 			<span
 				className={styles.date}
 				style={
-					user.login === feedback.userLogin
+					user && user.login === feedback.userLogin
 						? { color: '#000000' }
 						: {}
 				}

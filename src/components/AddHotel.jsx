@@ -192,7 +192,7 @@ const AddHotel = () => {
 		}
 		createHotel(newHotel, token)
 			.then(response => {
-				setSuccessMessage('Hotel created!')
+				setSuccessMessage('Отель успешно создан')
 				setErrorMessage('')
 				setNewHotel({
 					city: '',

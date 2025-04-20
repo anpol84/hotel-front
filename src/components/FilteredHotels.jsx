@@ -20,7 +20,7 @@ const FilteredHotels = () => {
 	const [isAdmin, setIsAdmin] = useState(false)
 	const [user, setUser] = useState({ role: [], id: null, login: 'Гость' })
 	const [selectedStars, setSelectedStars] = useState(1)
-	const [selectedRate, setSelectedRate] = useState(0)
+	const [selectedRate, setSelectedRate] = useState(-1)
 	const [selectedAdditions, setSelectedAdditions] = useState([])
 	const [selectedPositions, setSelectedPositions] = useState([])
 	const [selectedRoomPeople, setSelectedRoomPeople] = useState([])
@@ -178,8 +178,6 @@ const FilteredHotels = () => {
 				matchesRoomTypes
 			)
 		})
-
-		console.log(newFilteredData)
 
 		setFilteredData(newFilteredData)
 	}
@@ -383,6 +381,14 @@ const FilteredHotels = () => {
 	const totalPages = Math.ceil(filteredData.length / hotelsPerPage)
 
 	const renderHotels = () => {
+		if (filteredData.length == 0) {
+			return (
+				<p className={styles.hotelsNotExists}>
+					Подходящего отеля не существует, но вы можете выбрать любой
+					другой!
+				</p>
+			)
+		}
 		const startIndex = (currentPage - 1) * hotelsPerPage
 		const endIndex = startIndex + hotelsPerPage
 		return filteredData
@@ -451,6 +457,7 @@ const FilteredHotels = () => {
 						onChange={handleRateChange}
 						className={styles.rateSelector}
 					>
+						<option value='0'>Средний рейтинг 0 и выше</option>
 						<option value='1'>Средний рейтинг 1 и выше</option>
 						<option value='2'>Средний рейтинг 2 и выше</option>
 						<option value='3'>Средний рейтинг 3 и выше</option>

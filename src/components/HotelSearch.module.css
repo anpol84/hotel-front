@@ -60,7 +60,7 @@
 			text-transform: uppercase;
 			color: #f6f6f6;
 			text-align: center;
-			line-height: 40px;
+			line-height: 45px;
 		}
 	}
 }
@@ -71,14 +71,14 @@
 	align-items: center;
 	justify-content: space-between;
 	background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, 0.3) 100%);
-	width: 1000px;
+	width: 725px;
 	padding-bottom: 250px;
 	padding-top: 0;
 	padding-right: 0;
 	margin-right: 0;
 
 	.gptForm {
-		padding-right: -100px;
+		padding-right: -200px;
 		.gptFormHeader {
 			font-family: var(--second-family);
 			font-weight: 500;
@@ -122,7 +122,7 @@
 				text-transform: uppercase;
 				color: #f6f6f6;
 				text-align: center;
-				line-height: 40px;
+				line-height: 47px;
 			}
 		}
 		border-radius: 32px;
@@ -133,7 +133,7 @@
 	}
 	.examplesDiv {
 		margin-top: 60px;
-		width: 346px;
+		width: 80%;
 		height: 202px;
 
 		.examplesHeader {
@@ -146,22 +146,25 @@
 			text-align: center;
 			margin-bottom: 10px;
 		}
-
-		.example {
-			border-radius: 12px;
-			padding: 15px 25px;
-			width: 346px;
-			height: auto;
-			box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.13);
-			background: #fefefe;
-			margin-top: 10px;
-			.exampleText {
-				font-family: var(--second-family);
-				font-weight: 500;
-				font-size: 16px;
-				color: #000;
-				margin: 0 auto;
-				display: block;
+		.examples {
+			display: flex;
+			justify-content: space-between;
+			.example {
+				border-radius: 12px;
+				padding: 15px 25px;
+				width: 48%;
+				height: auto;
+				box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.13);
+				background: #fefefe;
+				margin-top: 10px;
+				.exampleText {
+					font-family: var(--second-family);
+					font-weight: 500;
+					font-size: 16px;
+					color: #000;
+					margin: 0 auto;
+					display: block;
+				}
 			}
 		}
 	}
@@ -170,7 +173,7 @@
 .earth {
 	position: absolute;
 	z-index: -1;
-	margin-left: 300px;
+	left: 30%;
 	display: block;
 }
 

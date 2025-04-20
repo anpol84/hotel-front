@@ -44,12 +44,9 @@ const FavouriteHotels = () => {
 				setIsLoading(false)
 			})
 	}, [])
-	const combinedError = userError || error
+
 	if (isLoading) {
 		return <div>Loading rooms........</div>
-	}
-	if (combinedError) {
-		return <div className='text-danger'>Error : {error}</div>
 	}
 
 	const handleChangeFavourite = hotelId => {
@@ -92,6 +89,14 @@ const FavouriteHotels = () => {
 	const totalPages = Math.ceil(filteredData.length / hotelsPerPage)
 
 	const renderHotels = () => {
+		if (filteredData.length == 0) {
+			return (
+				<p className={styles.hotelsNotExists}>
+					У вас не добавлено отелей в избранное, ознакомьтесь с нашими
+					лучшими отелями!
+				</p>
+			)
+		}
 		const startIndex = (currentPage - 1) * hotelsPerPage
 		const endIndex = startIndex + hotelsPerPage
 		return filteredData
